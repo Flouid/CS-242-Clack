@@ -20,20 +20,21 @@ public class ClackData {
     Date date;
 
     // constructor to set up userName and type, date is automatically created
-    ClackData(String userName, int type) {
+    public ClackData(String userName, int type) {
         this.userName = userName;
         this.type = type;
         this.date = new Date();
     }
 
     // constructor to create anonymous user
-    ClackData(int type) {
+    public ClackData(int type) {
         this("Anon", type);
     }
 
     // default constructor
-    ClackData() {
-        this("Invalid", 0);     // This might need revisiting
+    public ClackData() {
+        // This might need revisiting, right now it creates an invalid object
+        this("Invalid", -1);
     }
 
     // returns the type
