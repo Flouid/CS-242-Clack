@@ -10,6 +10,12 @@ import data.ClackData;
 
 public class TestClackData {
 
+    /**
+     * The main function runs some code that checks that each
+     * of the methods and constructors in the ClackData class work.
+     *
+     * @param args Command Line Arguments
+     */
     public static void main(String[] args) {
 
         // Test detailed constructor
@@ -30,7 +36,6 @@ public class TestClackData {
         // Test default constructor
         ClackData testThree = new ClackData();
         System.out.println("The third piece of data is named: " + testThree.getUserName() + " and has type: " + testThree.getType());
-
 
     }
 }
