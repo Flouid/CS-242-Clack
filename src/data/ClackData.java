@@ -8,7 +8,7 @@ import java.util.Date;
  * @author Louis Keith
  */
 
-public class ClackData {
+public abstract class ClackData {
 
     // constant declarations
     public final static int CONSTANT_LISTUSERS = 0;
@@ -82,5 +82,5 @@ public class ClackData {
         return date;
     }
 
-    // public abstract String getData();
+    public abstract String getData();
 }
