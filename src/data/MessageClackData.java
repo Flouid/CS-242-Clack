@@ -44,4 +44,24 @@ public class MessageClackData extends ClackData {
     public String getData() {
         return message;
     }
+
+    /**
+     * A method to correctly return a unique hashcode for the message.
+     *
+     * @return Integer representing a unique hashcode
+     */
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return super.equals(obj);
+    }
+
+    @Override
+    public String toString() {
+        return super.toString();
+    }
 }
