@@ -46,7 +46,7 @@ public class MessageClackData extends ClackData {
     }
 
     /**
-     * A method to correctly return a unique hashcode for the message.
+     * A method to correctly return a unique hashcode for the class.
      *
      * @return Integer representing a unique hashcode
      */
@@ -55,9 +55,21 @@ public class MessageClackData extends ClackData {
         return super.hashCode();
     }
 
+    /**
+     * A method to determine if two messages are equal.
+     *
+     * @param other MessageClackData object representing another message
+     * @return boolean representing if the other parameter equals this instance of MessageClackData
+     */
     @Override
-    public boolean equals(Object obj) {
-        return super.equals(obj);
+    public boolean equals(Object other) {
+        if (other == null) return false;
+        if (!(other instanceof MessageClackData)) return false;
+
+        MessageClackData otherMessage = (MessageClackData)other;
+        return this.message.equals(otherMessage.getData()) &&
+                this.userName.equals(otherMessage.getUserName()) &&
+                this.type == otherMessage.getType();
     }
 
     @Override
