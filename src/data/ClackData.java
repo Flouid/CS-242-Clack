@@ -82,5 +82,10 @@ public abstract class ClackData {
         return date;
     }
 
+    /**
+     * An abstract method to return the data contained in the class.
+     *
+     * @return String representing message or file contents.
+     */
     public abstract String getData();
 }
