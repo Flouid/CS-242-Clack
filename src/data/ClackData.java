@@ -21,9 +21,9 @@ public abstract class ClackData {
     private final static int DEFAULT_TYPE = 1;
 
     // instance variable declarations
-    String userName;
-    int type;
-    Date date;
+    private String userName;
+    private int type;
+    private Date date;
 
     /**
      * General purpose constructor for creating a ClackData object.

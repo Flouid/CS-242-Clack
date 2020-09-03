@@ -14,7 +14,7 @@ public class MessageClackData extends ClackData {
     private final static String DEFAULT_MESSAGE = "";
 
     // instance variable declarations
-    String message;
+    private String message;
 
     /**
      * General purpose constructor to set up username, message, and type
@@ -67,13 +67,19 @@ public class MessageClackData extends ClackData {
         if (!(other instanceof MessageClackData)) return false;
 
         MessageClackData otherMessage = (MessageClackData)other;
-        return this.message.equals(otherMessage.getData()) &&
-                this.userName.equals(otherMessage.getUserName()) &&
-                this.type == otherMessage.getType();
+        return message.equals(otherMessage.getData()) &&
+                getUserName().equals(otherMessage.getUserName()) &&
+                getType() == otherMessage.getType() &&
+                getDate() == otherMessage.getDate();
     }
 
+    /**
+     * A method to return the entire message object as a string.
+     *
+     * @return A string with all of the instance data for the message
+     */
     @Override
     public String toString() {
-        return super.toString();
+        return getUserName() + " sent a message: " + message + "\nSent on: " + getDate() + " with type: " + getType();
     }
 }
