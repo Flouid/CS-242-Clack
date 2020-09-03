@@ -10,6 +10,9 @@ import data.ClackData;
 
 public class MessageClackData extends ClackData {
 
+    // default values
+    private final static String DEFAULT_MESSAGE = "";
+
     // instance variable declarations
     String message;
 
@@ -25,8 +28,20 @@ public class MessageClackData extends ClackData {
         this.message = message;
     }
 
+    /**
+     * Default constructor initializes with a blank message.
+     */
+    public MessageClackData() {
+        super();
+        this.message = DEFAULT_MESSAGE;
+    }
 
+    /**
+     * A method to return the contents of a user's message.
+     *
+     * @return String representing the user's message
+     */
     public String getData() {
-        return "";
+        return message;
     }
 }
