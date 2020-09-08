@@ -41,7 +41,6 @@ public class TestClackData {
         System.out.println("testMessageClackData2's toString method: \n" + testMessageClackData2.toString());
         System.out.print("\n");
 
-        // This is incorrectly returning false
         System.out.println("testMessageClackData1 and testMessageClackData2 are equal: "
                 + testMessageClackData1.equals(testMessageClackData2));
         System.out.print("\n");
@@ -66,7 +65,6 @@ public class TestClackData {
         System.out.println("testMessageClackData4's toString method: \n" + testMessageClackData4.toString());
         System.out.print("\n");
 
-        // This is incorrectly returning false
         System.out.println("testMessageClackData3 and testMessageClackData4 are equal: "
                 + testMessageClackData3.equals(testMessageClackData4));
         System.out.print("\n");
