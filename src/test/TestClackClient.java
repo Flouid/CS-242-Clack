@@ -11,5 +11,13 @@ public class TestClackClient {
 
     public static void main(String[] args) {
 
+        // Test Variables
+        final String testUserName = "testUserName1";
+        final String testHostName = "testHostName1";
+        final int port = 9999;
+
+
+        // Test ClackClient's first constructor
+        ClackClient testClackData1 = new ClackClient(testUserName, testHostName, port);
     }
 }

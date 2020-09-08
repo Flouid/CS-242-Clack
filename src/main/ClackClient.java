@@ -29,7 +29,7 @@ public class ClackClient {
      * @param hostName String representing name of the computer representing the server
      * @param port     integer representing port number on server connected to
      */
-    ClackClient(String userName, String hostName, int port) {
+    public ClackClient(String userName, String hostName, int port) {
         this.userName = userName;
         this.hostName = hostName;
         this.port = port;
@@ -45,7 +45,7 @@ public class ClackClient {
      * @param userName String representing name of the client
      * @param hostName String representing name of the computer representing the server
      */
-    ClackClient(String userName, String hostName) {
+    public ClackClient(String userName, String hostName) {
         this(userName, hostName, DEFAULT_PORT);
     }
 
@@ -55,7 +55,7 @@ public class ClackClient {
      *
      * @param userName String representing name of the client
      */
-    ClackClient(String userName) {
+    public ClackClient(String userName) {
         this.userName = userName;
         hostName = "localhost";
     }
@@ -63,7 +63,7 @@ public class ClackClient {
     /**
      * Default constructor that sets user to anonymous
      */
-    ClackClient() {
+    public ClackClient() {
         this(DEFAULT_NAME);
     }
 
