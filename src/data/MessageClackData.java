@@ -63,14 +63,13 @@ public class MessageClackData extends ClackData {
      */
     @Override
     public boolean equals(Object other) {
-        if (other == null) return false;
-        if (!(other instanceof MessageClackData)) return false;
+        if (this == other) return true;
+        if (other == null || getClass() != other.getClass()) return false;
 
         MessageClackData otherMessage = (MessageClackData)other;
         return message.equals(otherMessage.getData()) &&
                 getUserName().equals(otherMessage.getUserName()) &&
-                getType() == otherMessage.getType() &&
-                getDate() == otherMessage.getDate();
+                getType() == otherMessage.getType();
     }
 
     /**
