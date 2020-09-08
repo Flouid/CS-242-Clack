@@ -20,7 +20,7 @@ public class ClackServer {
 
 
     /**
-     * General purpose constructor to set up username, message, and type
+     * General purpose constructor to set up port
      *
      * @param port integer representing port number on server connected to
      */
@@ -34,8 +34,7 @@ public class ClackServer {
      * Default constructor that sets port to default port number 7000
      */
     ClackServer() {
-        super();
-        port = DEFAULT_PORT;
+        this(DEFAULT_PORT);
     }
 
     public void start() {
@@ -55,10 +54,10 @@ public class ClackServer {
     }
 
     /**
-     * A method to determine if two files are equal.
+     * A method to determine if two Servers are equal.
      *
      * @param other FileClackData object representing another file
-     * @return boolean representing if the other parameter equals this instance of FileClackData
+     * @return boolean representing if the other parameter equals this instance of ClackServer
      */
     @Override
     public boolean equals(Object other) {
