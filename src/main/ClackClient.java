@@ -12,6 +12,7 @@ import java.util.Objects;
 public class ClackClient {
     // default values
     private final static int DEFAULT_PORT = 7000;
+    private final static String DEFAULT_NAME = "Anonymous";
 
     // instance variable declarations
     private String userName;
@@ -63,7 +64,7 @@ public class ClackClient {
      * Default constructor that sets user to anonymous
      */
     ClackClient() {
-        this("anonymous");
+        this(DEFAULT_NAME);
     }
 
     public void start() {
