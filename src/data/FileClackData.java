@@ -35,7 +35,7 @@ public class FileClackData extends ClackData {
     /**
      * Default constructor initializes with a blank file.
      */
-    FileClackData() {
+    public FileClackData() {
         super();
         fileName = DEFAULT_FILE_NAME;
         fileContents = DEFAULT_FILE_CONTENTS;
