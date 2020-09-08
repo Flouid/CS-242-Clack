@@ -1,6 +1,13 @@
 package data;
 
 import java.io.File;
+import java.util.Objects;
+
+/**
+ * This class is the basic building block for a file in Clack.
+ *
+ * @author Alex Cohen
+ */
 
 public class FileClackData extends ClackData {
 
@@ -60,7 +67,7 @@ public class FileClackData extends ClackData {
      */
     @Override
     public int hashCode() {
-        return super.hashCode();
+        return Objects.hash(fileName, fileContents);
     }
 
     /**
@@ -71,14 +78,11 @@ public class FileClackData extends ClackData {
      */
     @Override
     public boolean equals(Object other) {
-        if (other == null) return false;
-        if (!(other instanceof FileClackData)) return false;
-
-        FileClackData otherFile = (FileClackData) other;
-        return fileContents.equals(otherFile.getData()) &&
-                getUserName().equals(otherFile.getUserName()) &&
-                getType() == otherFile.getType() &&
-                getDate() == otherFile.getDate();
+        if (this == other) return true;
+        if (other == null || getClass() != other.getClass()) return false;
+        FileClackData that = (FileClackData) other;
+        return Objects.equals(fileName, that.fileName) &&
+                Objects.equals(fileContents, that.fileContents);
     }
 
     /**
