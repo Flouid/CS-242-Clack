@@ -1,4 +1,6 @@
-package data;
+package main;
+
+import data.ClackData;
 
 import java.util.Objects;
 
