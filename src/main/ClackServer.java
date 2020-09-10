@@ -26,7 +26,7 @@ public class ClackServer {
      *
      * @param port integer representing port number on server connected to
      */
-    ClackServer(int port) {
+    public ClackServer(int port) {
         this.port = port;
 
         dataToReceiveFromClient = dataToSendToClient = null;
@@ -35,7 +35,7 @@ public class ClackServer {
     /**
      * Default constructor that sets port to default port number 7000
      */
-    ClackServer() {
+    public ClackServer() {
         this(DEFAULT_PORT);
     }
 
