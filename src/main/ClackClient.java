@@ -27,7 +27,7 @@ public class ClackClient {
      *
      * @param userName String representing name of the client
      * @param hostName String representing name of the computer representing the server
-     * @param port     integer representing port number on server connected to
+     * @param port     Integer representing port number on server connected to
      */
     public ClackClient(String userName, String hostName, int port) {
         this.userName = userName;
@@ -87,14 +87,29 @@ public class ClackClient {
 
     }
 
+    /**
+     * A method to return the name of a client
+     *
+     * @return A string representing the name of a client
+     */
     public String getUserName() {
         return userName;
     }
 
+    /**
+     * A method to return the name of the computer representing the server
+     *
+     * @return String representing name of the computer representing the server
+     */
     public String getHostName() {
         return hostName;
     }
 
+    /**
+     * A method to return an integer representing port number on server connected to
+     *
+     * @return An integer representing port number on server connected to
+     */
     public int getPort() {
         return port;
     }

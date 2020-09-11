@@ -41,14 +41,29 @@ public class FileClackData extends ClackData {
         fileContents = DEFAULT_FILE_CONTENTS;
     }
 
+    /**
+     * A method to set the name of a file
+     *
+     * @param fileName String representing the new name for the file
+     */
     public void setFileName(String fileName) {
         this.fileName = fileName;
     }
 
+    /**
+     * A method to return the name of a file
+     *
+     * @return a string representing the name of a file
+     */
     public String getFileName() {
         return fileName;
     }
 
+    /**
+     * A method to return the contents of a file
+     *
+     * @return A string representing the contents of a file
+     */
     @Override
     public String getData() {
         return fileContents;

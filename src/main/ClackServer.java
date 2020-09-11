@@ -51,6 +51,11 @@ public class ClackServer {
 
     }
 
+    /**
+     * A method to return a server's port
+     *
+     * @return An integer representing a server's port
+     */
     public int getPort() {
         return port;
     }
