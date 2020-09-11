@@ -8,18 +8,22 @@ import java.util.Date;
  * @author Louis Keith
  */
 
-public class ClackData {
+public abstract class ClackData {
 
     // constant declarations
     public final static int CONSTANT_LISTUSERS = 0;
-    public static int CONSTANT_LOGOUT = 1;
-    public static int CONSTANT_SENDMESSAGE = 2;
-    public static int CONSTANT_SENDFILE = 3;
+    public final static int CONSTANT_LOGOUT = 1;
+    public final static int CONSTANT_SENDMESSAGE = 2;
+    public final static int CONSTANT_SENDFILE = 3;
+
+    // default values
+    private final static String DEFAULT_NAME = "Anon";
+    private final static int DEFAULT_TYPE = 1;
 
     // instance variable declarations
-    String userName;
-    int type;
-    Date date;
+    private String userName;
+    private int type;
+    private Date date;
 
     /**
      * General purpose constructor for creating a ClackData object.
@@ -39,7 +43,7 @@ public class ClackData {
      * @param type Integer representing data type
      */
     public ClackData(int type) {
-        this("Anon", type);
+        this(DEFAULT_NAME, type);
     }
 
     /**
@@ -47,7 +51,7 @@ public class ClackData {
      */
     public ClackData() {
         // This might need revisiting, right now it creates an invalid object
-        this("Invalid", -1);
+        this(DEFAULT_NAME, DEFAULT_TYPE);
     }
 
 
@@ -78,5 +82,10 @@ public class ClackData {
         return date;
     }
 
-    // getData() should go here, I have no idea what it's asking of me though
+    /**
+     * An abstract method to return the data contained in the class.
+     *
+     * @return String representing message or file contents.
+     */
+    public abstract String getData();
 }
