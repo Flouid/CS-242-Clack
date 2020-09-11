@@ -91,15 +91,14 @@ public class FileClackData extends ClackData {
      * @param other FileClackData object representing another file
      * @return boolean representing if the other parameter equals this instance of FileClackData
      */
+
     @Override
     public boolean equals(Object other) {
         if (this == other) return true;
         if (other == null || getClass() != other.getClass()) return false;
         FileClackData fileData = (FileClackData) other;
-        return fileName.equals(fileData.fileName) &&
-                fileContents.equals(fileData.fileContents) &&
-                getType() == fileData.getType() &&
-                getUserName().equals(fileData.getUserName());
+        return Objects.equals(fileName, fileData.fileName) &&
+                Objects.equals(fileContents, fileData.fileContents);
     }
 
     /**
