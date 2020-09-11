@@ -112,10 +112,10 @@ public class ClackClient {
         ClackClient client = (ClackClient) other;
         return port == client.port &&
                 closeConnection == client.closeConnection &&
-                Objects.equals(userName, client.userName) &&
-                Objects.equals(hostName, client.hostName) &&
-                Objects.equals(dataToReceiveFromClient, client.dataToReceiveFromClient) &&
-                Objects.equals(dataToSendToClient, client.dataToSendToClient);
+                userName.equals(client.userName) &&
+                hostName.equals(client.hostName) &&
+                dataToReceiveFromClient.equals(client.dataToReceiveFromClient) &&
+                dataToSendToClient.equals(client.dataToSendToClient);
     }
 
     /**
