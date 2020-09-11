@@ -15,7 +15,6 @@ public class TestClackData {
         final String testName = "name1";
         final String testMessage = "test1";
         final String testFileName1 = "fileName1";
-        final String testFileName2 = "fileName2";
         final int testType = 0;
 
         /*
