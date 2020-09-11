@@ -52,7 +52,9 @@ public class MessageClackData extends ClackData {
      */
     @Override
     public int hashCode() {
-        return super.hashCode();
+        int hashCode = 3;
+        hashCode += getType() + getUserName().hashCode() + message.hashCode();
+        return hashCode;
     }
 
     /**
