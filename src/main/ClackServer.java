@@ -65,11 +65,11 @@ public class ClackServer {
     public boolean equals(Object other) {
         if (this == other) return true;
         if (other == null || getClass() != other.getClass()) return false;
-        ClackServer that = (ClackServer) other;
-        return port == that.port &&
-                closeConnection == that.closeConnection &&
-                Objects.equals(dataToReceiveFromClient, that.dataToReceiveFromClient) &&
-                Objects.equals(dataToSendToClient, that.dataToSendToClient);
+        ClackServer server = (ClackServer) other;
+        return port == server.port &&
+                closeConnection == server.closeConnection &&
+                Objects.equals(dataToReceiveFromClient, server.dataToReceiveFromClient) &&
+                Objects.equals(dataToSendToClient, server.dataToSendToClient);
     }
 
     /**
