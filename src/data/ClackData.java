@@ -89,26 +89,23 @@ public abstract class ClackData {
     public abstract String getData();
 
     protected String encrypt(String inputStringToEncrypt, String key) {
-        inputStringToEncrypt = inputStringToEncrypt.toLowerCase();
-
         char[] encryptedString = inputStringToEncrypt.toCharArray();
+        char charBuffer;
         for (int i = 0; i < encryptedString.length; i++) {
+            charBuffer = encryptedString[i];
             if (encryptedString[i] != ' ')
-                encryptedString[i] += ((int) key.charAt(i % key.length()) - 65);
-            encryptedString[i] = (char) (encryptedString[i] % 65);
-        }
-        //        int charToInt;
-//        for (int i = 0; i < encryptedString.length; i++) {
-//
-//            charToInt = (int) key.charAt((i % key.length()));
-//            if (charToInt >= 65 && charToInt <= 90)
-//                charToInt -= 65;
-//            else if (charToInt >= 97 && charToInt <= 122)
-//                charToInt -= 97;
-//
-//            encryptedString[i] += charToInt;
-//        }
+                encryptedString[i] += ((int) key.charAt(i % key.length()));
 
+            if (charBuffer >= 65 && charBuffer <= 90) {
+                encryptedString[i] = (char) (encryptedString[i] % 90);
+                if (encryptedString[i] < 65)
+                    encryptedString[i] += 65;
+            } else if (charBuffer >= 97 && charBuffer <= 122) {
+                encryptedString[i] = (char) (encryptedString[i] % 122);
+                if (encryptedString[i] < 97)
+                    encryptedString[i] += 97;
+            }
+        }
         return new String(encryptedString);
     }
 
