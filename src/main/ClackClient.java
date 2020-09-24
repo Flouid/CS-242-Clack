@@ -74,12 +74,23 @@ public class ClackClient {
         this(DEFAULT_NAME);
     }
 
+    /**
+     * A method to start and run the clack client until the user decides to stop
+     *
+     * @author Louis Keith
+     */
     public void start() {
         inFromStd = new Scanner(System.in);
+        while (!closeConnection) {
+            readClientData();
+            dataToSendToServer = dataToReceiveFromServer;
+            printData();
+        }
     }
 
     /**
      * A method to get a command from the user and perform the appropriate action
+     * Reads data into the dataToSendToServer object and initializes it as FileClackData or MessageClackData
      *
      * @author Louis Keith
      */
@@ -126,6 +137,12 @@ public class ClackClient {
 
     }
 
+    /**
+     * Reads from dataToSendToServer and prints all of the information a client
+     * may want to see in a user-friendly manner
+     *
+     * @author Louis Keith
+     */
     public void printData() {
 
     }
