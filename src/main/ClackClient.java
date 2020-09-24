@@ -37,9 +37,20 @@ public class ClackClient {
      * @param port     Integer representing port number on server connected to.
      */
     public ClackClient(String userName, String hostName, int port) {
-        this.userName = userName;
-        this.hostName = hostName;
-        this.port = port;
+        try {
+            this.userName = userName;
+            this.hostName = hostName;
+            this.port = port;
+
+            if (userName == null)
+                throw new IllegalArgumentException("Username cannot be null");
+            if (hostName == null)
+                throw new IllegalArgumentException("Hostname cannot be null");
+            if (port < 1024)
+                throw new IllegalArgumentException("Port must be at least 1024");
+        } catch (IllegalArgumentException iae) {
+            System.err.println("Illegal argument found");
+        }
 
         closeConnection = false;
         dataToReceiveFromServer = dataToSendToServer = null;
@@ -63,7 +74,13 @@ public class ClackClient {
      * @param userName String representing name of the client.
      */
     public ClackClient(String userName) {
-        this.userName = userName;
+        try {
+            this.userName = userName;
+            if (userName == null)
+                throw new IllegalArgumentException("Username cannot be null");
+        } catch (IllegalArgumentException iae) {
+            System.err.println("Illegal argument found");
+        }
         hostName = "localhost";
     }
 
@@ -109,7 +126,7 @@ public class ClackClient {
                 String fileName = inFromStd.next();
                 dataToSendToServer = new FileClackData(userName, fileName, 3); // 3 denotes SEND_FILE
                 try {
-                    ((FileClackData)dataToSendToServer).readFileContents(key);
+                    ((FileClackData) dataToSendToServer).readFileContents(key);
                 } catch (IOException ioe) {
                     dataToSendToServer = null;
                     System.err.println(ioe.getMessage());
