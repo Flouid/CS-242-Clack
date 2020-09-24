@@ -107,9 +107,9 @@ public class ClackClient {
             // check if the user wishes to send a file name and attempts to do so
             case "SENDFILE": {
                 String fileName = inFromStd.next();
-                FileClackData dataToSendToServer = new FileClackData(userName, fileName, 3); // 3 denotes SEND_FILE
+                dataToSendToServer = new FileClackData(userName, fileName, 3); // 3 denotes SEND_FILE
                 try {
-                    dataToSendToServer.readFileContents();
+                    ((FileClackData)dataToSendToServer).readFileContents(key);
                 } catch (IOException ioe) {
                     dataToSendToServer = null;
                     System.err.println(ioe.getMessage());
@@ -123,7 +123,7 @@ public class ClackClient {
             }
             // if the input is anything else, attempt to send a message
             default: {
-                dataToSendToServer = new MessageClackData(userName, userInput, 2);
+                dataToSendToServer = new MessageClackData(userName, userInput, key, 2);
                 break;
             }
         }
@@ -144,7 +144,11 @@ public class ClackClient {
      * @author Louis Keith
      */
     public void printData() {
-
+        if (dataToReceiveFromServer == null) {
+            System.out.println("The reference is null, there is no data to print");
+        }
+        // java should automatically choose the correct toString method to use to output the data
+        System.out.println(dataToReceiveFromServer);
     }
 
     /**
