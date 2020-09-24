@@ -59,6 +59,16 @@ public class MessageClackData extends ClackData {
     }
 
     /**
+     * A method to return the contents of a user's encrypted message using a key
+     *
+     * @param key String representing the encryption key
+     * @return String representing unencrypted message
+     */
+    public String getData(String key) {
+        return decrypt(message, key);
+    }
+
+    /**
      * A method to correctly return a unique hashcode for the class.
      *
      * @return Integer representing a unique hashcode

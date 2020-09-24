@@ -69,6 +69,16 @@ public class FileClackData extends ClackData {
         return fileContents;
     }
 
+    /**
+     * A method to decrypt and return the contents of a file using a key
+     *
+     * @param key String representing the encryption key
+     * @return A string representing the contents of a file
+     */
+    public String getData(String key) {
+        return decrypt(fileContents, key);
+    }
+
     public void readFileContents() {
     }
 
