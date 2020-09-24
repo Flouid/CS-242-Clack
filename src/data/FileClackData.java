@@ -74,6 +74,7 @@ public class FileClackData extends ClackData {
      *
      * @param key String representing the encryption key
      * @return A string representing the contents of a file
+     * @author Louis Keith
      */
     public String getData(String key) {
         return decrypt(fileContents, key);
