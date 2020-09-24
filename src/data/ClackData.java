@@ -5,8 +5,6 @@ import java.util.Date;
 /**
  * This class is the basic building block for a unit of data in the Clack application.
  *
- * test
- *
  * @author Louis Keith
  */
 
