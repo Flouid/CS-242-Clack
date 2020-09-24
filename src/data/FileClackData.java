@@ -81,10 +81,12 @@ public class FileClackData extends ClackData {
     }
 
     /**
-     * A helper method containing all of the code to read the contents of a file and return it as a single String
+     * A private helper method containing all of the code to read
+     * the contents of a file and return it as a single String
      *
      * @return String representing the contents of a file
      * @throws IOException when an I/O error occurs
+     * @author Louis Keith
      */
     private String readFileContentsHelper() throws IOException {
         String fileContents = null;
@@ -114,7 +116,7 @@ public class FileClackData extends ClackData {
     }
 
     /**
-     * A method to read the contents of a non-secure file.
+     * A method to read the contents of a non-secure file
      *
      * @throws IOException when an I/O error occurs
      * @author Louis Keith
@@ -124,7 +126,8 @@ public class FileClackData extends ClackData {
     }
 
     /**
-     * An overloaded method to perform secure file reads.
+     * An overloaded method to perform secure file reads
+     * Reads the file contents and then encrypts them
      *
      * @param key String representing the key to use to encrypt the file contents
      * @throws IOException when an I/O error occurs
@@ -134,7 +137,40 @@ public class FileClackData extends ClackData {
         fileContents = encrypt(readFileContentsHelper(), key);
     }
 
+    /**
+     * A private helper method containing of the code to write the contents of a file
+     *
+     * @param fileContents String representing the contents that should be written to the file
+     * @author Louis Keith
+     */
+    private void writeFileContentsHelper(String fileContents) {
+        try {
+            FileWriter fileWriter = new FileWriter(new File(fileName));
+            fileWriter.write(fileContents);
+            fileWriter.close();
+        } catch (IOException ioe) {
+            System.err.println(ioe.getMessage());
+        }
+    }
+
+    /**
+     * A method to write to a file in a non-secure manner
+     *
+     * @author Louis Keith
+     */
     public void writeFileContents() {
+        writeFileContentsHelper(fileContents);
+    }
+
+    /**
+     * A method to write to a file in a secure manner
+     * Decrypts the file contents and then writes them
+     *
+     * @param key String representing the key to use to decrypt file contents
+     * @author Louis Keith
+     */
+    public void writeFileContents(String key) {
+        writeFileContentsHelper(decrypt(fileContents, key));
     }
 
     /**
