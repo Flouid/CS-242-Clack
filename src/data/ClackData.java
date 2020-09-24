@@ -88,28 +88,62 @@ public abstract class ClackData {
      */
     public abstract String getData();
 
+    /**
+     * A method to encrypt a string.
+     *
+     * @return The encrypted string.
+     * @author Alex Cohen
+     */
     protected String encrypt(String inputStringToEncrypt, String key) {
         char[] encryptedString = inputStringToEncrypt.toCharArray();
-        char charBuffer;
-        for (int i = 0; i < encryptedString.length; i++) {
-            charBuffer = encryptedString[i];
-            if (encryptedString[i] != ' ')
-                encryptedString[i] += ((int) key.charAt(i % key.length()));
+        char[] alphabet = new char[26];
 
-            if (charBuffer >= 65 && charBuffer <= 90) {
-                encryptedString[i] = (char) (encryptedString[i] % 90);
-                if (encryptedString[i] < 65)
-                    encryptedString[i] += 65;
-            } else if (charBuffer >= 97 && charBuffer <= 122) {
-                encryptedString[i] = (char) (encryptedString[i] % 122);
-                if (encryptedString[i] < 97)
-                    encryptedString[i] += 97;
-            }
+        key = key.toUpperCase();
+
+        for (int i = 0; i < alphabet.length; i++) {
+            alphabet[i] = (char) (65 + i);
+        }
+
+        for (int i = 0; i < encryptedString.length; i++) {
+            for (int j = 0; j < alphabet.length; j++)
+                if (key.charAt(i % key.length()) == alphabet[j])
+                    encryptedString[i] += j;
+
+            if ((int) encryptedString[i] > 90)
+                encryptedString[i] = (char) (((int) encryptedString[i] % 90) + 65);
+            else if ((int) encryptedString[i] > 122)
+                encryptedString[i] = (char) (((int) encryptedString[i] % 122) + 97);
         }
         return new String(encryptedString);
     }
 
+    /**
+     * A method to decrypt an encrypted string.
+     *
+     * @return The decrypted string.
+     * @author Alex Cohen
+     */
     protected String decrypt(String inputStringToDecrypt, String key) {
-        return "";
+        char[] decryptedString = inputStringToDecrypt.toCharArray();
+        char[] alphabet = new char[26];
+
+        key = key.toUpperCase();
+
+        for (int i = 0; i < alphabet.length; i++) {
+            alphabet[i] = (char) (65 + i);
+        }
+
+        for (int i = 0; i < decryptedString.length; i++) {
+            for (int j = 0; j < alphabet.length; j++)
+                if (key.charAt(i % key.length()) == alphabet[j])
+                    decryptedString[i] -= j;
+
+            if ((int) decryptedString[i] < 65)
+                decryptedString[i] += alphabet.length;
+            else if (decryptedString[i] < 97)
+                decryptedString[i] += alphabet.length;
+        }
+
+        return new String(decryptedString);
     }
 }
