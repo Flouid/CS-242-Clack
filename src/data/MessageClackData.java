@@ -29,6 +29,19 @@ public class MessageClackData extends ClackData {
     }
 
     /**
+     * Constructor that takes a key for the purpose of encrypting the message
+     *
+     * @param userName String representing the user name of the sender
+     * @param message String representing the user's message
+     * @param key String used to encrypt the message before it is stored
+     * @param type Integer representing the type of message being sent
+     */
+    public MessageClackData(String userName, String message, String key, int type) {
+        super(userName, type);
+        this.message = encrypt(message, key);
+    }
+
+    /**
      * Default constructor initializes with a blank message.
      */
     public MessageClackData() {
