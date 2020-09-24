@@ -108,7 +108,7 @@ public class FileClackData extends ClackData {
 
             fileContents = stringBuilder.toString();
         } catch (FileNotFoundException nfe) {
-            System.err.println("System could not find the specified file: " + fileName);
+            throw new IOException("System could not find the specified file: " + fileName);
         } catch (IOException ioe) {
             System.err.println(ioe.getMessage());
         }

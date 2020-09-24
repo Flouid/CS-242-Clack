@@ -1,8 +1,12 @@
 package main;
 
 import data.ClackData;
+import data.FileClackData;
+import data.MessageClackData;
 
+import java.io.IOException;
 import java.util.Objects;
+import java.util.Scanner;
 
 /**
  * This class is the basic structure for the client in Clack.
@@ -19,8 +23,11 @@ public class ClackClient {
     private String hostName;
     private int port;
     private boolean closeConnection; //true is closed, false is open
-    private ClackData dataToReceiveFromClient;
-    private ClackData dataToSendToClient;
+    private ClackData dataToReceiveFromServer;
+    private ClackData dataToSendToServer;
+
+    private Scanner inFromStd;
+    private final String key = "encryption";
 
     /**
      * General purpose constructor to set up username, hostname, and port
@@ -35,7 +42,7 @@ public class ClackClient {
         this.port = port;
 
         closeConnection = false;
-        dataToReceiveFromClient = dataToSendToClient = null;
+        dataToReceiveFromServer = dataToSendToServer = null;
     }
 
     /**
@@ -68,11 +75,47 @@ public class ClackClient {
     }
 
     public void start() {
-
+        inFromStd = new Scanner(System.in);
     }
 
+    /**
+     * A method to get a command from the user and perform the appropriate action
+     *
+     * @author Louis Keith
+     */
     public void readClientData() {
+        // get command from user
+        String userInput = inFromStd.next();
 
+        switch (userInput) {
+            // check if the user wishes to close the connection and does so
+            case "DONE": {
+                closeConnection = true;
+                break;
+            }
+            // check if the user wishes to send a file name and attempts to do so
+            case "SENDFILE": {
+                String fileName = inFromStd.next();
+                FileClackData dataToSendToServer = new FileClackData(userName, fileName, 3); // 3 denotes SEND_FILE
+                try {
+                    dataToSendToServer.readFileContents();
+                } catch (IOException ioe) {
+                    dataToSendToServer = null;
+                    System.err.println(ioe.getMessage());
+                }
+                break;
+            }
+            // check if the user wishes to list users, for now do nothing
+            case "LISTUSERS": {
+                // do nothing
+                break;
+            }
+            // if the input is anything else, attempt to send a message
+            default: {
+                dataToSendToServer = new MessageClackData(userName, userInput, 2);
+                break;
+            }
+        }
     }
 
     public void sendData() {
@@ -129,8 +172,8 @@ public class ClackClient {
                 closeConnection == client.closeConnection &&
                 Objects.equals(userName, client.userName) &&
                 Objects.equals(hostName, client.hostName) &&
-                Objects.equals(dataToReceiveFromClient, client.dataToReceiveFromClient) &&
-                Objects.equals(dataToSendToClient, client.dataToSendToClient);
+                Objects.equals(dataToReceiveFromServer, client.dataToReceiveFromServer) &&
+                Objects.equals(dataToSendToServer, client.dataToSendToServer);
     }
 
     /**
@@ -140,7 +183,7 @@ public class ClackClient {
      */
     @Override
     public int hashCode() {
-        return Objects.hash(userName, hostName, port, closeConnection, dataToReceiveFromClient, dataToSendToClient);
+        return Objects.hash(userName, hostName, port, closeConnection, dataToReceiveFromServer, dataToSendToServer);
     }
 
     /**
@@ -155,8 +198,8 @@ public class ClackClient {
                 ", hostName='" + hostName + '\'' +
                 ", port=" + port +
                 ", closeConnection=" + closeConnection +
-                ", dataToReceiveFromClient=" + dataToReceiveFromClient +
-                ", dataToSendToClient=" + dataToSendToClient +
+                ", dataToReceiveFromClient=" + dataToReceiveFromServer +
+                ", dataToSendToClient=" + dataToSendToServer +
                 '}';
     }
 }
