@@ -29,7 +29,7 @@ public abstract class ClackData {
      * General purpose constructor for creating a ClackData object.
      *
      * @param userName String representing the name of the user
-     * @param type Integer representing data type
+     * @param type     Integer representing data type
      */
     public ClackData(String userName, int type) {
         this.userName = userName;
@@ -53,7 +53,6 @@ public abstract class ClackData {
         // This might need revisiting, right now it creates an invalid object
         this(DEFAULT_NAME, DEFAULT_TYPE);
     }
-
 
     /**
      * A simple get method for the data type.
@@ -88,4 +87,29 @@ public abstract class ClackData {
      * @return String representing message or file contents.
      */
     public abstract String getData();
+
+    protected String encrypt(String inputStringToEncrypt, String key) {
+        char[] encryptedString = inputStringToEncrypt.toCharArray();
+        char charBuffer;
+        for (int i = 0; i < encryptedString.length; i++) {
+            charBuffer = encryptedString[i];
+            if (encryptedString[i] != ' ')
+                encryptedString[i] += ((int) key.charAt(i % key.length()));
+
+            if (charBuffer >= 65 && charBuffer <= 90) {
+                encryptedString[i] = (char) (encryptedString[i] % 90);
+                if (encryptedString[i] < 65)
+                    encryptedString[i] += 65;
+            } else if (charBuffer >= 97 && charBuffer <= 122) {
+                encryptedString[i] = (char) (encryptedString[i] % 122);
+                if (encryptedString[i] < 97)
+                    encryptedString[i] += 97;
+            }
+        }
+        return new String(encryptedString);
+    }
+
+    protected String decrypt(String inputStringToDecrypt, String key) {
+        return "";
+    }
 }

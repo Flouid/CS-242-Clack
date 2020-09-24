@@ -73,8 +73,8 @@ public class ClackServer {
         ClackServer server = (ClackServer) other;
         return port == server.port &&
                 closeConnection == server.closeConnection &&
-                dataToSendToClient.equals(server.dataToSendToClient) &&
-                dataToReceiveFromClient.equals(server.dataToReceiveFromClient);
+                Objects.equals(dataToReceiveFromClient, server.dataToReceiveFromClient) &&
+                Objects.equals(dataToSendToClient, server.dataToSendToClient);
     }
 
     /**
