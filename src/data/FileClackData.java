@@ -1,6 +1,6 @@
 package data;
 
-import java.io.File;
+import java.io.*;
 import java.util.Objects;
 
 /**
@@ -80,7 +80,58 @@ public class FileClackData extends ClackData {
         return decrypt(fileContents, key);
     }
 
-    public void readFileContents() {
+    /**
+     * A helper method containing all of the code to read the contents of a file and return it as a single String
+     *
+     * @return String representing the contents of a file
+     * @throws IOException when an I/O error occurs
+     */
+    private String readFileContentsHelper() throws IOException {
+        String fileContents = null;
+        try {
+            BufferedReader bufferedReader = new BufferedReader(new FileReader(fileName));
+            StringBuilder stringBuilder = new StringBuilder();
+            String nextLine;
+
+            // read each line and append it to the string buffer followed by a line separator
+            while ((nextLine = bufferedReader.readLine()) != null) {
+                stringBuilder.append(nextLine);
+                stringBuilder.append(System.getProperty("line.separator"));
+            }
+
+            // remove the extra line separator at the end of the string.
+            // this will never throw an IndexOutOfBoundsException as the index is by definition less than the length
+            stringBuilder.deleteCharAt(stringBuilder.length() - 1);
+            bufferedReader.close();
+
+            fileContents = stringBuilder.toString();
+        } catch (FileNotFoundException nfe) {
+            System.err.println("System could not find the specified file: " + fileName);
+        } catch (IOException ioe) {
+            System.err.println(ioe.getMessage());
+        }
+        return fileContents;
+    }
+
+    /**
+     * A method to read the contents of a non-secure file.
+     *
+     * @throws IOException when an I/O error occurs
+     * @author Louis Keith
+     */
+    public void readFileContents() throws IOException {
+        fileContents = readFileContentsHelper();
+    }
+
+    /**
+     * An overloaded method to perform secure file reads.
+     *
+     * @param key String representing the key to use to encrypt the file contents
+     * @throws IOException when an I/O error occurs
+     * @author Louis Keith
+     */
+    public void readFileContents(String key) throws IOException {
+        fileContents = encrypt(readFileContentsHelper(), key);
     }
 
     public void writeFileContents() {
