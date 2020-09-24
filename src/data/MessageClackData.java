@@ -17,15 +17,28 @@ public class MessageClackData extends ClackData {
     private String message;
 
     /**
-     * General purpose constructor to set up username, message, and type
+     * General purpose constructor to set up username, message, and type.
      *
-     * @param userName String representing the user name of the sender
-     * @param message String representing the user's message
-     * @param type Integer representing the type of message being sent
+     * @param userName String representing the user name of the sender.
+     * @param message String representing the user's message.
+     * @param type Integer representing the type of message being sent.
      */
     public MessageClackData(String userName, String message, int type) {
         super(userName, type);
         this.message = message;
+    }
+
+    /**
+     * Constructor that takes a key for the purpose of encrypting the message.
+     *
+     * @param userName String representing the user name of the sender.
+     * @param message String representing the user's message.
+     * @param key String used to encrypt the message before it is stored.
+     * @param type Integer representing the type of message being sent.
+     */
+    public MessageClackData(String userName, String message, String key, int type) {
+        super(userName, type);
+        this.message = encrypt(message, key);
     }
 
     /**
@@ -39,16 +52,26 @@ public class MessageClackData extends ClackData {
     /**
      * A method to return the contents of a user's message.
      *
-     * @return String representing the user's message
+     * @return String representing the user's message.
      */
     public String getData() {
         return message;
     }
 
     /**
+     * A method to return the contents of a user's encrypted message using a key.
+     *
+     * @param key String representing the encryption key.
+     * @return String representing unencrypted message.
+     */
+    public String getData(String key) {
+        return decrypt(message, key);
+    }
+
+    /**
      * A method to correctly return a unique hashcode for the class.
      *
-     * @return Integer representing a unique hashcode
+     * @return Integer representing a unique hashcode.
      */
     @Override
     public int hashCode() {
@@ -60,8 +83,8 @@ public class MessageClackData extends ClackData {
     /**
      * A method to determine if two messages are equal.
      *
-     * @param other MessageClackData object representing another message
-     * @return boolean representing if the other parameter equals this instance of MessageClackData
+     * @param other MessageClackData object representing another message.
+     * @return boolean representing if the other parameter equals this instance of MessageClackData.
      */
     @Override
     public boolean equals(Object other) {
@@ -77,7 +100,7 @@ public class MessageClackData extends ClackData {
     /**
      * A method to return the entire message object as a string.
      *
-     * @return A string with all of the instance data for the message
+     * @return A string with all of the instance data for the message.
      */
     @Override
     public String toString() {

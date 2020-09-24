@@ -1,8 +1,12 @@
 package main;
 
 import data.ClackData;
+import data.FileClackData;
+import data.MessageClackData;
 
+import java.io.IOException;
 import java.util.Objects;
+import java.util.Scanner;
 
 /**
  * This class is the basic structure for the client in Clack.
@@ -19,15 +23,18 @@ public class ClackClient {
     private String hostName;
     private int port;
     private boolean closeConnection; //true is closed, false is open
-    private ClackData dataToReceiveFromClient;
-    private ClackData dataToSendToClient;
+    private ClackData dataToReceiveFromServer;
+    private ClackData dataToSendToServer;
+
+    private Scanner inFromStd;
+    private final String key = "encryption";
 
     /**
-     * General purpose constructor to set up username, hostname, and port
+     * General purpose constructor to set up username, hostname, and port.
      *
-     * @param userName String representing name of the client
-     * @param hostName String representing name of the computer representing the server
-     * @param port     Integer representing port number on server connected to
+     * @param userName String representing name of the client.
+     * @param hostName String representing name of the computer representing the server.
+     * @param port     Integer representing port number on server connected to.
      */
     public ClackClient(String userName, String hostName, int port) {
         this.userName = userName;
@@ -35,25 +42,25 @@ public class ClackClient {
         this.port = port;
 
         closeConnection = false;
-        dataToReceiveFromClient = dataToSendToClient = null;
+        dataToReceiveFromServer = dataToSendToServer = null;
     }
 
     /**
-     * General purpose constructor to set up username, hostname
-     * Sets port to default 7000
+     * General purpose constructor to set up username, hostname.
+     * Sets port to default 7000.
      *
-     * @param userName String representing name of the client
-     * @param hostName String representing name of the computer representing the server
+     * @param userName String representing name of the client.
+     * @param hostName String representing name of the computer representing the server.
      */
     public ClackClient(String userName, String hostName) {
         this(userName, hostName, DEFAULT_PORT);
     }
 
     /**
-     * General purpose constructor to set up username
-     * Sets host name to localhost, the server and client programs run on the same computer
+     * General purpose constructor to set up username.
+     * Sets host name to localhost, the server and client programs run on the same computer.
      *
-     * @param userName String representing name of the client
+     * @param userName String representing name of the client.
      */
     public ClackClient(String userName) {
         this.userName = userName;
@@ -61,18 +68,65 @@ public class ClackClient {
     }
 
     /**
-     * Default constructor that sets user to anonymous
+     * Default constructor that sets user to anonymous.
      */
     public ClackClient() {
         this(DEFAULT_NAME);
     }
 
+    /**
+     * A method to start and run the clack client until the user decides to stop.
+     *
+     * @author Louis Keith
+     */
     public void start() {
-
+        inFromStd = new Scanner(System.in);
+        while (!closeConnection) {
+            readClientData();
+            dataToSendToServer = dataToReceiveFromServer;
+            printData();
+        }
     }
 
+    /**
+     * A method to get a command from the user and perform the appropriate action.
+     * Reads data into the dataToSendToServer object and initializes it as FileClackData or MessageClackData.
+     *
+     * @author Louis Keith
+     */
     public void readClientData() {
+        // get command from user
+        String userInput = inFromStd.next();
 
+        switch (userInput) {
+            // check if the user wishes to close the connection and does so
+            case "DONE": {
+                closeConnection = true;
+                break;
+            }
+            // check if the user wishes to send a file name and attempts to do so
+            case "SENDFILE": {
+                String fileName = inFromStd.next();
+                dataToSendToServer = new FileClackData(userName, fileName, 3); // 3 denotes SEND_FILE
+                try {
+                    ((FileClackData)dataToSendToServer).readFileContents(key);
+                } catch (IOException ioe) {
+                    dataToSendToServer = null;
+                    System.err.println(ioe.getMessage());
+                }
+                break;
+            }
+            // check if the user wishes to list users, for now do nothing
+            case "LISTUSERS": {
+                // do nothing
+                break;
+            }
+            // if the input is anything else, attempt to send a message
+            default: {
+                dataToSendToServer = new MessageClackData(userName, userInput, key, 2);
+                break;
+            }
+        }
     }
 
     public void sendData() {
@@ -83,12 +137,22 @@ public class ClackClient {
 
     }
 
+    /**
+     * Reads from dataToSendToServer and prints all of the information a client.
+     * may want to see in a user-friendly manner.
+     *
+     * @author Louis Keith
+     */
     public void printData() {
-
+        if (dataToReceiveFromServer == null) {
+            System.out.println("The reference is null, there is no data to print");
+        }
+        // java should automatically choose the correct toString method to use to output the data
+        System.out.println(dataToReceiveFromServer);
     }
 
     /**
-     * A method to return the name of a client
+     * A method to return the name of a client.
      *
      * @return A string representing the name of a client
      */
@@ -97,7 +161,7 @@ public class ClackClient {
     }
 
     /**
-     * A method to return the name of the computer representing the server
+     * A method to return the name of the computer representing the server.
      *
      * @return String representing name of the computer representing the server
      */
@@ -106,7 +170,7 @@ public class ClackClient {
     }
 
     /**
-     * A method to return an integer representing port number on server connected to
+     * A method to return an integer representing port number on server connected to.
      *
      * @return An integer representing port number on server connected to
      */
@@ -117,8 +181,8 @@ public class ClackClient {
     /**
      * A method to determine if two clients are equal.
      *
-     * @param other FileClackData object representing another file
-     * @return boolean representing if the other parameter equals this instance of ClackClient
+     * @param other FileClackData object representing another file.
+     * @return boolean representing if the other parameter equals this instance of ClackClient.
      */
     @Override
     public boolean equals(Object other) {
@@ -129,24 +193,24 @@ public class ClackClient {
                 closeConnection == client.closeConnection &&
                 Objects.equals(userName, client.userName) &&
                 Objects.equals(hostName, client.hostName) &&
-                Objects.equals(dataToReceiveFromClient, client.dataToReceiveFromClient) &&
-                Objects.equals(dataToSendToClient, client.dataToSendToClient);
+                Objects.equals(dataToReceiveFromServer, client.dataToReceiveFromServer) &&
+                Objects.equals(dataToSendToServer, client.dataToSendToServer);
     }
 
     /**
      * A method to correctly return a unique hashcode for the class.
      *
-     * @return Integer representing a unique hashcode
+     * @return Integer representing a unique hashcode.
      */
     @Override
     public int hashCode() {
-        return Objects.hash(userName, hostName, port, closeConnection, dataToReceiveFromClient, dataToSendToClient);
+        return Objects.hash(userName, hostName, port, closeConnection, dataToReceiveFromServer, dataToSendToServer);
     }
 
     /**
      * A method to return the entire client object as a string.
      *
-     * @return A string with all of the instance data for the client
+     * @return A string with all of the instance data for the client.
      */
     @Override
     public String toString() {
@@ -155,8 +219,8 @@ public class ClackClient {
                 ", hostName='" + hostName + '\'' +
                 ", port=" + port +
                 ", closeConnection=" + closeConnection +
-                ", dataToReceiveFromClient=" + dataToReceiveFromClient +
-                ", dataToSendToClient=" + dataToSendToClient +
+                ", dataToReceiveFromClient=" + dataToReceiveFromServer +
+                ", dataToSendToClient=" + dataToSendToServer +
                 '}';
     }
 }

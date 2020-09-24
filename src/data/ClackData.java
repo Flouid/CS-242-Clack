@@ -91,6 +91,8 @@ public abstract class ClackData {
     /**
      * A method to encrypt a string.
      *
+     * @param inputStringToEncrypt The input string to encrypt.
+     * @param key The encryption key to use to encrypt the input string.
      * @return The encrypted string.
      * @author Alex Cohen
      */
@@ -120,6 +122,8 @@ public abstract class ClackData {
     /**
      * A method to decrypt an encrypted string.
      *
+     * @param inputStringToDecrypt The input string to decrypt.
+     * @param key The encryption key to use to decrypt the input string.
      * @return The decrypted string.
      * @author Alex Cohen
      */
