@@ -20,11 +20,11 @@ public class FileClackData extends ClackData {
     private String fileContents;
 
     /**
-     * General purpose constructor to set up username, message, and type
+     * General purpose constructor to set up username, message, and type.
      *
-     * @param userName String representing the user name of the sender
-     * @param fileName String representing name of file
-     * @param type     Integer representing the type of message being sent
+     * @param userName String representing the user name of the sender.
+     * @param fileName String representing name of file.
+     * @param type     Integer representing the type of message being sent.
      */
     public FileClackData(String userName, String fileName, int type) {
         super(userName, type);
@@ -42,27 +42,27 @@ public class FileClackData extends ClackData {
     }
 
     /**
-     * A method to set the name of a file
+     * A method to set the name of a file.
      *
-     * @param fileName String representing the new name for the file
+     * @param fileName String representing the new name for the file.
      */
     public void setFileName(String fileName) {
         this.fileName = fileName;
     }
 
     /**
-     * A method to return the name of a file
+     * A method to return the name of a file.
      *
-     * @return a string representing the name of a file
+     * @return a string representing the name of a file.
      */
     public String getFileName() {
         return fileName;
     }
 
     /**
-     * A method to return the contents of a file
+     * A method to return the contents of a file.
      *
-     * @return A string representing the contents of a file
+     * @return A string representing the contents of a file.
      */
     @Override
     public String getData() {
@@ -70,10 +70,10 @@ public class FileClackData extends ClackData {
     }
 
     /**
-     * A method to decrypt and return the contents of a file using a key
+     * A method to decrypt and return the contents of a file using a key.
      *
-     * @param key String representing the encryption key
-     * @return A string representing the contents of a file
+     * @param key String representing the encryption key.
+     * @return A string representing the contents of a file.
      * @author Louis Keith
      */
     public String getData(String key) {
@@ -81,11 +81,11 @@ public class FileClackData extends ClackData {
     }
 
     /**
-     * A private helper method containing all of the code to read
-     * the contents of a file and return it as a single String
+     * A private helper method containing all of the code to read.
+     * the contents of a file and return it as a single String.
      *
-     * @return String representing the contents of a file
-     * @throws IOException when an I/O error occurs
+     * @return String representing the contents of a file.
+     * @throws IOException when an I/O error occurs.
      * @author Louis Keith
      */
     private String readFileContentsHelper() throws IOException {
@@ -116,9 +116,9 @@ public class FileClackData extends ClackData {
     }
 
     /**
-     * A method to read the contents of a non-secure file
+     * A method to read the contents of a non-secure file.
      *
-     * @throws IOException when an I/O error occurs
+     * @throws IOException when an I/O error occurs.
      * @author Louis Keith
      */
     public void readFileContents() throws IOException {
@@ -126,11 +126,11 @@ public class FileClackData extends ClackData {
     }
 
     /**
-     * An overloaded method to perform secure file reads
-     * Reads the file contents and then encrypts them
+     * An overloaded method to perform secure file reads.
+     * Reads the file contents and then encrypts them.
      *
-     * @param key String representing the key to use to encrypt the file contents
-     * @throws IOException when an I/O error occurs
+     * @param key String representing the key to use to encrypt the file contents.
+     * @throws IOException when an I/O error occurs.
      * @author Louis Keith
      */
     public void readFileContents(String key) throws IOException {
@@ -138,9 +138,9 @@ public class FileClackData extends ClackData {
     }
 
     /**
-     * A private helper method containing of the code to write the contents of a file
+     * A private helper method containing of the code to write the contents of a file.
      *
-     * @param fileContents String representing the contents that should be written to the file
+     * @param fileContents String representing the contents that should be written to the file.
      * @author Louis Keith
      */
     private void writeFileContentsHelper(String fileContents) {
@@ -154,7 +154,7 @@ public class FileClackData extends ClackData {
     }
 
     /**
-     * A method to write to a file in a non-secure manner
+     * A method to write to a file in a non-secure manner.
      *
      * @author Louis Keith
      */
@@ -163,10 +163,10 @@ public class FileClackData extends ClackData {
     }
 
     /**
-     * A method to write to a file in a secure manner
-     * Decrypts the file contents and then writes them
+     * A method to write to a file in a secure manner.
+     * Decrypts the file contents and then writes them.
      *
-     * @param key String representing the key to use to decrypt file contents
+     * @param key String representing the key to use to decrypt file contents.
      * @author Louis Keith
      */
     public void writeFileContents(String key) {
@@ -176,7 +176,7 @@ public class FileClackData extends ClackData {
     /**
      * A method to correctly return a unique hashcode for the class.
      *
-     * @return Integer representing a unique hashcode
+     * @return Integer representing a unique hashcode.
      */
     @Override
     public int hashCode() {
@@ -186,8 +186,8 @@ public class FileClackData extends ClackData {
     /**
      * A method to determine if two files are equal.
      *
-     * @param other FileClackData object representing another file
-     * @return boolean representing if the other parameter equals this instance of FileClackData
+     * @param other FileClackData object representing another file.
+     * @return boolean representing if the other parameter equals this instance of FileClackData.
      */
 
     @Override
@@ -202,7 +202,7 @@ public class FileClackData extends ClackData {
     /**
      * A method to return the entire file object as a string.
      *
-     * @return A string with all of the instance data for the file
+     * @return A string with all of the instance data for the file.
      */
     @Override
     public String toString() {

@@ -22,9 +22,9 @@ public class ClackServer {
 
 
     /**
-     * General purpose constructor to set up port
+     * General purpose constructor to set up port.
      *
-     * @param port integer representing port number on server connected to
+     * @param port integer representing port number on server connected to.
      */
     public ClackServer(int port) {
         this.port = port;
@@ -33,7 +33,7 @@ public class ClackServer {
     }
 
     /**
-     * Default constructor that sets port to default port number 7000
+     * Default constructor that sets port to default port number 7000.
      */
     public ClackServer() {
         this(DEFAULT_PORT);
@@ -54,7 +54,7 @@ public class ClackServer {
     /**
      * A method to return a server's port
      *
-     * @return An integer representing a server's port
+     * @return An integer representing a server's port.
      */
     public int getPort() {
         return port;
@@ -63,8 +63,8 @@ public class ClackServer {
     /**
      * A method to determine if two Servers are equal.
      *
-     * @param other FileClackData object representing another file
-     * @return boolean representing if the other parameter equals this instance of ClackServer
+     * @param other FileClackData object representing another file.
+     * @return boolean representing if the other parameter equals this instance of ClackServer.
      */
     @Override
     public boolean equals(Object other) {
@@ -80,7 +80,7 @@ public class ClackServer {
     /**
      * A method to correctly return a unique hashcode for the class.
      *
-     * @return Integer representing a unique hashcode
+     * @return Integer representing a unique hashcode.
      */
     @Override
     public int hashCode() {
@@ -90,7 +90,7 @@ public class ClackServer {
     /**
      * A method to return the entire server object as a string.
      *
-     * @return A string with all of the instance data for the server
+     * @return A string with all of the instance data for the server.
      */
     @Override
     public String toString() {

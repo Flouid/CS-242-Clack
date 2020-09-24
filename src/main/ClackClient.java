@@ -30,11 +30,11 @@ public class ClackClient {
     private final String key = "encryption";
 
     /**
-     * General purpose constructor to set up username, hostname, and port
+     * General purpose constructor to set up username, hostname, and port.
      *
-     * @param userName String representing name of the client
-     * @param hostName String representing name of the computer representing the server
-     * @param port     Integer representing port number on server connected to
+     * @param userName String representing name of the client.
+     * @param hostName String representing name of the computer representing the server.
+     * @param port     Integer representing port number on server connected to.
      */
     public ClackClient(String userName, String hostName, int port) {
         this.userName = userName;
@@ -46,21 +46,21 @@ public class ClackClient {
     }
 
     /**
-     * General purpose constructor to set up username, hostname
-     * Sets port to default 7000
+     * General purpose constructor to set up username, hostname.
+     * Sets port to default 7000.
      *
-     * @param userName String representing name of the client
-     * @param hostName String representing name of the computer representing the server
+     * @param userName String representing name of the client.
+     * @param hostName String representing name of the computer representing the server.
      */
     public ClackClient(String userName, String hostName) {
         this(userName, hostName, DEFAULT_PORT);
     }
 
     /**
-     * General purpose constructor to set up username
-     * Sets host name to localhost, the server and client programs run on the same computer
+     * General purpose constructor to set up username.
+     * Sets host name to localhost, the server and client programs run on the same computer.
      *
-     * @param userName String representing name of the client
+     * @param userName String representing name of the client.
      */
     public ClackClient(String userName) {
         this.userName = userName;
@@ -68,14 +68,14 @@ public class ClackClient {
     }
 
     /**
-     * Default constructor that sets user to anonymous
+     * Default constructor that sets user to anonymous.
      */
     public ClackClient() {
         this(DEFAULT_NAME);
     }
 
     /**
-     * A method to start and run the clack client until the user decides to stop
+     * A method to start and run the clack client until the user decides to stop.
      *
      * @author Louis Keith
      */
@@ -89,8 +89,8 @@ public class ClackClient {
     }
 
     /**
-     * A method to get a command from the user and perform the appropriate action
-     * Reads data into the dataToSendToServer object and initializes it as FileClackData or MessageClackData
+     * A method to get a command from the user and perform the appropriate action.
+     * Reads data into the dataToSendToServer object and initializes it as FileClackData or MessageClackData.
      *
      * @author Louis Keith
      */
@@ -138,8 +138,8 @@ public class ClackClient {
     }
 
     /**
-     * Reads from dataToSendToServer and prints all of the information a client
-     * may want to see in a user-friendly manner
+     * Reads from dataToSendToServer and prints all of the information a client.
+     * may want to see in a user-friendly manner.
      *
      * @author Louis Keith
      */
@@ -152,7 +152,7 @@ public class ClackClient {
     }
 
     /**
-     * A method to return the name of a client
+     * A method to return the name of a client.
      *
      * @return A string representing the name of a client
      */
@@ -161,7 +161,7 @@ public class ClackClient {
     }
 
     /**
-     * A method to return the name of the computer representing the server
+     * A method to return the name of the computer representing the server.
      *
      * @return String representing name of the computer representing the server
      */
@@ -170,7 +170,7 @@ public class ClackClient {
     }
 
     /**
-     * A method to return an integer representing port number on server connected to
+     * A method to return an integer representing port number on server connected to.
      *
      * @return An integer representing port number on server connected to
      */
@@ -181,8 +181,8 @@ public class ClackClient {
     /**
      * A method to determine if two clients are equal.
      *
-     * @param other FileClackData object representing another file
-     * @return boolean representing if the other parameter equals this instance of ClackClient
+     * @param other FileClackData object representing another file.
+     * @return boolean representing if the other parameter equals this instance of ClackClient.
      */
     @Override
     public boolean equals(Object other) {
@@ -200,7 +200,7 @@ public class ClackClient {
     /**
      * A method to correctly return a unique hashcode for the class.
      *
-     * @return Integer representing a unique hashcode
+     * @return Integer representing a unique hashcode.
      */
     @Override
     public int hashCode() {
@@ -210,7 +210,7 @@ public class ClackClient {
     /**
      * A method to return the entire client object as a string.
      *
-     * @return A string with all of the instance data for the client
+     * @return A string with all of the instance data for the client.
      */
     @Override
     public String toString() {
