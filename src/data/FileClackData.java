@@ -206,6 +206,6 @@ public class FileClackData extends ClackData {
      */
     @Override
     public String toString() {
-        return getUserName() + " sent a file: " + fileName + "\nwith contents: " + fileContents + " with type: " + getType();
+        return getUserName() + " sent a file: " + fileName + "\nwith contents: " + fileContents + "\nwith type: " + getType();
     }
 }

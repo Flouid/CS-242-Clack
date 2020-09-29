@@ -175,9 +175,13 @@ public class ClackClient {
     public void printData() {
         if (dataToReceiveFromServer == null) {
             System.out.println("The reference is null, there is no data to print");
-        } else {
-            // java should automatically choose the correct toString method to use to output the data
-            System.out.println(dataToReceiveFromServer);
+        } else if (dataToReceiveFromServer instanceof FileClackData) {
+            System.out.println(getHostName() + " sent a file: " + ((FileClackData)dataToReceiveFromServer).getFileName());
+            System.out.println("with contents: " + dataToReceiveFromServer.getData(key));
+            System.out.println("with type: " + dataToReceiveFromServer.getType());
+        } else if (dataToReceiveFromServer instanceof MessageClackData) {
+            System.out.println(getHostName() + " sent a message with contents: " + dataToReceiveFromServer.getData(key));
+            System.out.println("with type: " + dataToReceiveFromServer.getType());
         }
     }
 
