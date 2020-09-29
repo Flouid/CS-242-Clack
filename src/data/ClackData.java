@@ -100,13 +100,15 @@ public abstract class ClackData {
      * A method to encrypt a string.
      *
      * @param inputStringToEncrypt The input string to encrypt.
-     * @param key The encryption key to use to encrypt the input string.
+     * @param key                  The encryption key to use to encrypt the input string.
      * @return The encrypted string.
      * @author Alex Cohen
      */
     protected String encrypt(String inputStringToEncrypt, String key) {
         char[] encryptedString = inputStringToEncrypt.toCharArray();
         char[] alphabet = new char[26];
+        char charBuffer;
+        int spaceCount = 0;
 
         key = key.toUpperCase();
 
@@ -115,14 +117,23 @@ public abstract class ClackData {
         }
 
         for (int i = 0; i < encryptedString.length; i++) {
-            for (int j = 0; j < alphabet.length; j++)
-                if (key.charAt(i % key.length()) == alphabet[j])
-                    encryptedString[i] += j;
+            charBuffer = encryptedString[i];
+            if (encryptedString[i] == ' ') {
+                spaceCount++;
+            }
+            if (((int) encryptedString[i] >= 65 && (int) encryptedString[i] <= 90)
+                    || ((int) encryptedString[i] >= 97 && (int) encryptedString[i] <= 122)) {
+                for (int j = 0; j < alphabet.length; j++)
+                    if (key.charAt(((i - spaceCount) % key.length())) == alphabet[j]) {
+                        encryptedString[i] += j;
+                    }
 
-            if ((int) encryptedString[i] > 90)
-                encryptedString[i] = (char) (((int) encryptedString[i] % 90) + 65);
-            else if ((int) encryptedString[i] > 122)
-                encryptedString[i] = (char) (((int) encryptedString[i] % 122) + 97);
+                if ((int) charBuffer >= 97 && (int) charBuffer <= 122 && (int) encryptedString[i] > 122) {
+                    encryptedString[i] = (char) (((int) encryptedString[i] % 122) + 96);
+                } else if ((int) charBuffer >= 65 && (int) charBuffer <= 90 && (int) encryptedString[i] > 90) {
+                    encryptedString[i] = (char) (((int) encryptedString[i] % 90) + 64);
+                }
+            }
         }
         return new String(encryptedString);
     }
@@ -131,13 +142,15 @@ public abstract class ClackData {
      * A method to decrypt an encrypted string.
      *
      * @param inputStringToDecrypt The input string to decrypt.
-     * @param key The encryption key to use to decrypt the input string.
+     * @param key                  The encryption key to use to decrypt the input string.
      * @return The decrypted string.
      * @author Alex Cohen
      */
     protected String decrypt(String inputStringToDecrypt, String key) {
         char[] decryptedString = inputStringToDecrypt.toCharArray();
         char[] alphabet = new char[26];
+        char charBuffer;
+        int spaceCount = 0;
 
         key = key.toUpperCase();
 
@@ -146,16 +159,24 @@ public abstract class ClackData {
         }
 
         for (int i = 0; i < decryptedString.length; i++) {
-            for (int j = 0; j < alphabet.length; j++)
-                if (key.charAt(i % key.length()) == alphabet[j])
-                    decryptedString[i] -= j;
+            charBuffer = decryptedString[i];
+            if (decryptedString[i] == ' ') {
+                spaceCount++;
+            }
+            if (((int) decryptedString[i] >= 65 && (int) decryptedString[i] <= 90)
+                    || ((int) decryptedString[i] >= 97 && (int) decryptedString[i] <= 122)) {
+                for (int j = 0; j < alphabet.length; j++)
+                    if (key.charAt((i - spaceCount) % key.length()) == alphabet[j]) {
+                        decryptedString[i] -= j;
+                    }
 
-            if ((int) decryptedString[i] < 65)
-                decryptedString[i] += alphabet.length;
-            else if (decryptedString[i] < 97)
-                decryptedString[i] += alphabet.length;
+                if ((int) charBuffer >= 65 && (int) charBuffer <= 90 && (int) decryptedString[i] < 65) {
+                    decryptedString[i] += alphabet.length;
+                } else if ((int) charBuffer >= 97 && (int) charBuffer <= 122 && (int) decryptedString[i] < 97) {
+                    decryptedString[i] += alphabet.length;
+                }
+            }
         }
-
         return new String(decryptedString);
     }
 }
