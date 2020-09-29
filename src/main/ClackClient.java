@@ -49,7 +49,7 @@ public class ClackClient {
             if (port < 1024)
                 throw new IllegalArgumentException("Port must be at least 1024");
         } catch (IllegalArgumentException iae) {
-            System.err.println("Illegal argument found");
+            System.err.println("Illegal argument found: " + iae.getMessage());
         }
 
         closeConnection = false;
@@ -74,7 +74,7 @@ public class ClackClient {
             if (hostName == null)
                 throw new IllegalArgumentException("Hostname cannot be null");
         } catch (IllegalArgumentException iae) {
-            System.err.println("Illegal argument found");
+            System.err.println("Illegal argument found: " + iae.getMessage());
         }
     }
 
@@ -90,7 +90,7 @@ public class ClackClient {
             if (userName == null)
                 throw new IllegalArgumentException("Username cannot be null");
         } catch (IllegalArgumentException iae) {
-            System.err.println("Illegal argument found");
+            System.err.println("Illegal argument found: " + iae.getMessage());
         }
         hostName = "localhost";
     }
