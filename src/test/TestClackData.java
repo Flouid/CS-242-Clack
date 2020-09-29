@@ -19,7 +19,7 @@ public class TestClackData {
         final String testMessage = "test1";
         final String testFileName1 = "Part2_document.txt";
         final String testKey = "key";
-        final String testFileName2 = "fileName1";
+        final String testFileName2 = "fileName1.txt";
         final int testType = 0;
 
         /*
@@ -54,7 +54,7 @@ public class TestClackData {
         // The message will be printed in it's encrypted form
         System.out.println("Encrypted message contents of testMessageClackData3: " + testMessageClackData3.getData());
         // The same message will be printed but the secure method for getData() will be used, decrypting the message
-        System.out.println("Decrypted message contents of testMessageClackData3: " + ((MessageClackData)testMessageClackData3).getData(testKey));
+        System.out.println("Decrypted message contents of testMessageClackData3: " + testMessageClackData3.getData(testKey));
         System.out.println("Hash code of testMessageClackData3: " + testMessageClackData3.hashCode());
         System.out.println("testMessageClackData3's toString method: \n" + testMessageClackData3.toString());
         System.out.print("\n");
@@ -146,7 +146,7 @@ public class TestClackData {
         System.out.println("Date of testFileClackData1: " + testFileClackData1.getDate());
         System.out.println("File name of testMessageClackData1: " + ((FileClackData)testFileClackData1).getFileName());
         System.out.println("Encrypted File contents of testMessageClackData1: " + testFileClackData1.getData());
-        System.out.println("Decrypted File contents of testMessageClackData1: " + ((FileClackData)testFileClackData1).getData(testKey));
+        System.out.println("Decrypted File contents of testMessageClackData1: " + testFileClackData1.getData(testKey));
         System.out.println("Hash code of testMessageClackData1: " + testFileClackData1.hashCode());
         System.out.println("testMessageClackData1's toString method: \n" + testFileClackData1.toString());
         System.out.print("\n");
@@ -161,7 +161,7 @@ public class TestClackData {
         System.out.println("Date of testFileClackData1: " + testFileClackData1.getDate());
         System.out.println("File name of testMessageClackData1: " + ((FileClackData)testFileClackData1).getFileName());
         System.out.println("Encrypted File contents of testMessageClackData1: " + testFileClackData1.getData());
-        System.out.println("Decrypted File contents of testMessageClackData1: " + ((FileClackData)testFileClackData1).getData(testKey));
+        System.out.println("Decrypted File contents of testMessageClackData1: " + testFileClackData1.getData(testKey));
         System.out.println("Hash code of testMessageClackData1: " + testFileClackData1.hashCode());
         System.out.println("testMessageClackData1's toString method: \n" + testFileClackData1.toString());
         System.out.print("\n");
@@ -224,7 +224,7 @@ public class TestClackData {
         System.out.println("Date of testFileClackData3: " + testFileClackData3.getDate());
         System.out.println("File name of testMessageClackData3: " + ((FileClackData)testFileClackData3).getFileName());
         System.out.println("Encrypted File contents of testMessageClackData3: " + testFileClackData3.getData());
-        System.out.println("Decrypted File contents of testMessageClackData3: " + ((FileClackData)testFileClackData3).getData(testKey));
+        System.out.println("Decrypted File contents of testMessageClackData3: " + testFileClackData3.getData(testKey));
         System.out.println("Hash code of testMessageClackData3: " + testFileClackData3.hashCode());
         System.out.println("testMessageClackData3's toString method: \n" + testFileClackData3.toString());
         System.out.print("\n");
@@ -238,7 +238,7 @@ public class TestClackData {
         System.out.println("Date of testFileClackData3: " + testFileClackData3.getDate());
         System.out.println("File name of testMessageClackData3: " + ((FileClackData)testFileClackData3).getFileName());
         System.out.println("Encrypted File contents of testMessageClackData3: " + testFileClackData3.getData());
-        System.out.println("Decrypted File contents of testMessageClackData3: " + ((FileClackData)testFileClackData3).getData(testKey));
+        System.out.println("Decrypted File contents of testMessageClackData3: " + testFileClackData3.getData(testKey));
         System.out.println("Hash code of testMessageClackData3: " + testFileClackData3.hashCode());
         System.out.println("testMessageClackData3's toString method: \n" + testFileClackData3.toString());
         System.out.print("\n");

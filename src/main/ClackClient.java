@@ -49,7 +49,7 @@ public class ClackClient {
             if (port < 1024)
                 throw new IllegalArgumentException("Port must be at least 1024");
         } catch (IllegalArgumentException iae) {
-            System.err.println("Illegal argument found");
+            System.err.println("Illegal argument found: " + iae.getMessage());
         }
 
         closeConnection = false;
@@ -74,7 +74,7 @@ public class ClackClient {
             if (hostName == null)
                 throw new IllegalArgumentException("Hostname cannot be null");
         } catch (IllegalArgumentException iae) {
-            System.err.println("Illegal argument found");
+            System.err.println("Illegal argument found: " + iae.getMessage());
         }
     }
 
@@ -90,7 +90,7 @@ public class ClackClient {
             if (userName == null)
                 throw new IllegalArgumentException("Username cannot be null");
         } catch (IllegalArgumentException iae) {
-            System.err.println("Illegal argument found");
+            System.err.println("Illegal argument found: " + iae.getMessage());
         }
         hostName = "localhost";
     }
@@ -111,7 +111,7 @@ public class ClackClient {
         inFromStd = new Scanner(System.in);
         while (!closeConnection) {
             readClientData();
-            dataToSendToServer = dataToReceiveFromServer;
+            dataToReceiveFromServer = dataToSendToServer;
             printData();
         }
     }
@@ -124,6 +124,7 @@ public class ClackClient {
      */
     public void readClientData() {
         // get command from user
+        System.out.print("Enter command: ");
         String userInput = inFromStd.next();
 
         switch (userInput) {
@@ -174,9 +175,14 @@ public class ClackClient {
     public void printData() {
         if (dataToReceiveFromServer == null) {
             System.out.println("The reference is null, there is no data to print");
+        } else if (dataToReceiveFromServer instanceof FileClackData) {
+            System.out.println(getHostName() + " sent a file: " + ((FileClackData)dataToReceiveFromServer).getFileName());
+            System.out.println("with contents: " + dataToReceiveFromServer.getData(key));
+            System.out.println("with type: " + dataToReceiveFromServer.getType());
+        } else if (dataToReceiveFromServer instanceof MessageClackData) {
+            System.out.println(getHostName() + " sent a message with contents: " + dataToReceiveFromServer.getData(key));
+            System.out.println("with type: " + dataToReceiveFromServer.getType());
         }
-        // java should automatically choose the correct toString method to use to output the data
-        System.out.println(dataToReceiveFromServer);
     }
 
     /**

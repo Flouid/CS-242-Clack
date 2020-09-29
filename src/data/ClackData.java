@@ -89,6 +89,14 @@ public abstract class ClackData {
     public abstract String getData();
 
     /**
+     * An abstract method to return the data contained in the class after decrypting it with the given key.
+     *
+     * @param key String representing encryption key.
+     * @return String representing message or file contents.
+     */
+    public abstract String getData(String key);
+
+    /**
      * A method to encrypt a string.
      *
      * @param inputStringToEncrypt The input string to encrypt.
