@@ -111,7 +111,7 @@ public class ClackClient {
         inFromStd = new Scanner(System.in);
         while (!closeConnection) {
             readClientData();
-            dataToSendToServer = dataToReceiveFromServer;
+            dataToReceiveFromServer = dataToSendToServer;
             printData();
         }
     }
@@ -124,6 +124,7 @@ public class ClackClient {
      */
     public void readClientData() {
         // get command from user
+        System.out.print("Enter command: ");
         String userInput = inFromStd.next();
 
         switch (userInput) {
@@ -174,9 +175,10 @@ public class ClackClient {
     public void printData() {
         if (dataToReceiveFromServer == null) {
             System.out.println("The reference is null, there is no data to print");
+        } else {
+            // java should automatically choose the correct toString method to use to output the data
+            System.out.println(dataToReceiveFromServer);
         }
-        // java should automatically choose the correct toString method to use to output the data
-        System.out.println(dataToReceiveFromServer);
     }
 
     /**
