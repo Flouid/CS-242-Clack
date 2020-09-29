@@ -150,9 +150,10 @@ public class ClackClient {
                 // do nothing
                 break;
             }
-            // if the input is anything else, attempt to send a message
+            // if the input is anything else, read the rest of the line and send it as a message
             default: {
-                dataToSendToServer = new MessageClackData(userName, userInput, key, 2);
+                String restOfLine = inFromStd.nextLine();
+                dataToSendToServer = new MessageClackData(userName, userInput + restOfLine, key, 2);
                 break;
             }
         }
