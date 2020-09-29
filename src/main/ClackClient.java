@@ -64,7 +64,18 @@ public class ClackClient {
      * @param hostName String representing name of the computer representing the server.
      */
     public ClackClient(String userName, String hostName) {
-        this(userName, hostName, DEFAULT_PORT);
+        try {
+            this.userName = userName;
+            this.hostName = hostName;
+            this.port = DEFAULT_PORT;
+
+            if (userName == null)
+                throw new IllegalArgumentException("Username cannot be null");
+            if (hostName == null)
+                throw new IllegalArgumentException("Hostname cannot be null");
+        } catch (IllegalArgumentException iae) {
+            System.err.println("Illegal argument found");
+        }
     }
 
     /**

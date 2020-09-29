@@ -44,9 +44,8 @@ public class TestClackData {
                 + testMessageClackData1.equals(testMessageClackData2));
         System.out.print("\n");
 
-
-        // Test MessageClackData's default constructor
-        ClackData testMessageClackData3 = new MessageClackData();
+        // Test MessageClackData's first constructor
+        ClackData testMessageClackData3 = new MessageClackData(testName, testMessage, "key", testType);
         System.out.println("Type of testMessageClackData3: " + testMessageClackData3.getType());
         System.out.println("User name of testMessageClackData3: " + testMessageClackData3.getUserName());
         System.out.println("Date of testMessageClackData3: " + testMessageClackData3.getDate());
@@ -55,17 +54,42 @@ public class TestClackData {
         System.out.println("testMessageClackData3's toString method: \n" + testMessageClackData3.toString());
         System.out.print("\n");
 
-        ClackData testMessageClackData4 = new MessageClackData();
+        ClackData testMessageClackData4 = new MessageClackData(testName, testMessage, "key", testType);
         System.out.println("Type of testMessageClackData4: " + testMessageClackData4.getType());
         System.out.println("User name of testMessageClackData4: " + testMessageClackData4.getUserName());
         System.out.println("Date of testMessageClackData4: " + testMessageClackData4.getDate());
         System.out.println("Message contents of testMessageClackData4: " + testMessageClackData4.getData());
+//        System.out.println("Message contents of testMessageClackData4: " + testMessageClackData4.getData(testName);
         System.out.println("Hash code of testMessageClackData4: " + testMessageClackData4.hashCode());
         System.out.println("testMessageClackData4's toString method: \n" + testMessageClackData4.toString());
         System.out.print("\n");
 
-        System.out.println("testMessageClackData3 and testMessageClackData4 are equal: "
-                + testMessageClackData3.equals(testMessageClackData4));
+        System.out.println("testMessageClackData1 and testMessageClackData2 are equal: "
+                + testMessageClackData1.equals(testMessageClackData2));
+        System.out.print("\n");
+
+
+        // Test MessageClackData's default constructor
+        ClackData testMessageClackData5 = new MessageClackData();
+        System.out.println("Type of testMessageClackData5: " + testMessageClackData5.getType());
+        System.out.println("User name of testMessageClackData5: " + testMessageClackData5.getUserName());
+        System.out.println("Date of testMessageClackData5: " + testMessageClackData5.getDate());
+        System.out.println("Message contents of testMessageClackData5: " + testMessageClackData5.getData());
+        System.out.println("Hash code of testMessageClackData5: " + testMessageClackData5.hashCode());
+        System.out.println("testMessageClackData5's toString method: \n" + testMessageClackData5.toString());
+        System.out.print("\n");
+
+        ClackData testMessageClackData6 = new MessageClackData();
+        System.out.println("Type of testMessageClackData6: " + testMessageClackData6.getType());
+        System.out.println("User name of testMessageClackData6: " + testMessageClackData6.getUserName());
+        System.out.println("Date of testMessageClackData6: " + testMessageClackData6.getDate());
+        System.out.println("Message contents of testMessageClackData6: " + testMessageClackData6.getData());
+        System.out.println("Hash code of testMessageClackData6: " + testMessageClackData6.hashCode());
+        System.out.println("testMessageClackData6's toString method: \n" + testMessageClackData6.toString());
+        System.out.print("\n");
+
+        System.out.println("testMessageClackData5 and testMessageClackData6 are equal: "
+                + testMessageClackData5.equals(testMessageClackData6));
         System.out.print("\n");
 
         /*
@@ -77,6 +101,7 @@ public class TestClackData {
         System.out.println("Type of testFileClackData1: " + testFileClackData1.getType());
         System.out.println("User name of testFileClackData1: " + testFileClackData1.getUserName());
         System.out.println("Date of testFileClackData1: " + testFileClackData1.getDate());
+        System.out.println("File contents of testMessageClackData1: " + testFileClackData1.getData());
         System.out.println("File contents of testMessageClackData1: " + testFileClackData1.getData());
         System.out.println("Hash code of testMessageClackData1: " + testFileClackData1.hashCode());
         System.out.println("testMessageClackData1's toString method: \n" + testFileClackData1.toString());
@@ -101,18 +126,18 @@ public class TestClackData {
         System.out.println("Type of testFileClackData3: " + testFileClackData3.getType());
         System.out.println("User name of testFileClackData3: " + testFileClackData3.getUserName());
         System.out.println("Date of testFileClackData3: " + testFileClackData3.getDate());
-        System.out.println("File contents of testMessageClackData3: " + testFileClackData3.getData());
-        System.out.println("Hash code of testMessageClackData3: " + testFileClackData3.hashCode());
-        System.out.println("testMessageClackData3's toString method: \n" + testFileClackData3.toString());
+        System.out.println("File contents of testMessageClackData5: " + testFileClackData3.getData());
+        System.out.println("Hash code of testMessageClackData5: " + testFileClackData3.hashCode());
+        System.out.println("testMessageClackData5's toString method: \n" + testFileClackData3.toString());
         System.out.print("\n");
 
         ClackData testFileClackData4 = new FileClackData();
         System.out.println("Type of testFileClackData4: " + testFileClackData4.getType());
         System.out.println("User name of testFileClackData4: " + testFileClackData4.getUserName());
         System.out.println("Date of testFileClackData4: " + testFileClackData4.getDate());
-        System.out.println("File contents of testMessageClackData4: " + testFileClackData4.getData());
-        System.out.println("Hash code of testMessageClackData4: " + testFileClackData4.hashCode());
-        System.out.println("testMessageClackData4's toString method: \n" + testFileClackData4.toString());
+        System.out.println("File contents of testMessageClackData6: " + testFileClackData4.getData());
+        System.out.println("Hash code of testMessageClackData6: " + testFileClackData4.hashCode());
+        System.out.println("testMessageClackData6's toString method: \n" + testFileClackData4.toString());
         System.out.print("\n");
 
         System.out.println("testFileClackData3 and testFileClackData4 are equal: "

@@ -20,8 +20,8 @@ public class MessageClackData extends ClackData {
      * General purpose constructor to set up username, message, and type.
      *
      * @param userName String representing the user name of the sender.
-     * @param message String representing the user's message.
-     * @param type Integer representing the type of message being sent.
+     * @param message  String representing the user's message.
+     * @param type     Integer representing the type of message being sent.
      */
     public MessageClackData(String userName, String message, int type) {
         super(userName, type);
@@ -32,9 +32,9 @@ public class MessageClackData extends ClackData {
      * Constructor that takes a key for the purpose of encrypting the message.
      *
      * @param userName String representing the user name of the sender.
-     * @param message String representing the user's message.
-     * @param key String used to encrypt the message before it is stored.
-     * @param type Integer representing the type of message being sent.
+     * @param message  String representing the user's message.
+     * @param key      String used to encrypt the message before it is stored.
+     * @param type     Integer representing the type of message being sent.
      */
     public MessageClackData(String userName, String message, String key, int type) {
         super(userName, type);
@@ -91,7 +91,7 @@ public class MessageClackData extends ClackData {
         if (this == other) return true;
         if (other == null || getClass() != other.getClass()) return false;
 
-        MessageClackData otherMessage = (MessageClackData)other;
+        MessageClackData otherMessage = (MessageClackData) other;
         return message.equals(otherMessage.getData()) &&
                 getUserName().equals(otherMessage.getUserName()) &&
                 getType() == otherMessage.getType();

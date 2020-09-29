@@ -19,6 +19,9 @@ public class TestClackClient {
 
         // Test ClackClient's first constructor
         ClackClient testClackClient1 = new ClackClient(testUserName, testHostName, port);
+        testClackClient1.start();
+        testClackClient1.readClientData();
+        testClackClient1.printData();
         System.out.println("testClackClient1's user name: " + testClackClient1.getUserName());
         System.out.println("testClackClient1's host name: " + testClackClient1.getHostName());
         System.out.println("testClackClient1's port: " + testClackClient1.getPort());
@@ -27,6 +30,9 @@ public class TestClackClient {
         System.out.print("\n");
 
         ClackClient testClackClient2 = new ClackClient(testUserName, testHostName, port);
+        testClackClient2.start();
+        testClackClient2.readClientData();
+        testClackClient2.printData();
         System.out.println("testClackClient2's user name: " + testClackClient2.getUserName());
         System.out.println("testClackClient2's host name: " + testClackClient2.getHostName());
         System.out.println("testClackClient2's port: " + testClackClient2.getPort());
@@ -103,5 +109,23 @@ public class TestClackClient {
         System.out.println("testClackClient7 and testClackClient8 are equal: "
                 + testClackClient7.equals(testClackClient8));
         System.out.print("\n\n");
+
+        // catching exceptions in ClackClient's first constructor
+        ClackClient testClackClient9 = new ClackClient(null, testHostName, port);
+        System.out.println("testClackClient9's user name: " + testClackClient9.getUserName());
+        ClackClient testClackClient10 = new ClackClient(testUserName, null, port);
+        System.out.println("testClackClient10's user name: " + testClackClient10.getHostName());
+        ClackClient testClackClient11 = new ClackClient(testUserName, testHostName, 42);
+        System.out.println("testClackClient11's user name: " + testClackClient11.getPort());
+
+        // catching exceptions in ClackClient's second constructor
+        ClackClient testClackClient12 = new ClackClient(null, testHostName);
+        System.out.println("testClackClient12's user name: " + testClackClient12.getUserName());
+        ClackClient testClackClient13 = new ClackClient(testUserName, null);
+        System.out.println("testClackClient13's user name: " + testClackClient13.getHostName());
+
+        // catching exceptions in ClackClient's third constructor
+        ClackClient testClackClient14 = new ClackClient(null);
+        System.out.println("testClackClient14's user name: " + testClackClient14.getUserName());
     }
 }
