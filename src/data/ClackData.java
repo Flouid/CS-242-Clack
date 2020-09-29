@@ -92,13 +92,14 @@ public abstract class ClackData {
      * A method to encrypt a string.
      *
      * @param inputStringToEncrypt The input string to encrypt.
-     * @param key The encryption key to use to encrypt the input string.
+     * @param key                  The encryption key to use to encrypt the input string.
      * @return The encrypted string.
      * @author Alex Cohen
      */
     protected String encrypt(String inputStringToEncrypt, String key) {
         char[] encryptedString = inputStringToEncrypt.toCharArray();
         char[] alphabet = new char[26];
+        int spaceCount = 0;
 
         key = key.toUpperCase();
 
@@ -107,14 +108,22 @@ public abstract class ClackData {
         }
 
         for (int i = 0; i < encryptedString.length; i++) {
-            for (int j = 0; j < alphabet.length; j++)
-                if (key.charAt(i % key.length()) == alphabet[j])
-                    encryptedString[i] += j;
+            if (encryptedString[i] == ' ') {
+//                System.out.print(" ");
+                spaceCount++;
+            }
+            if (encryptedString[i] != ' ') {
+                for (int j = 0; j < alphabet.length; j++)
+                    if (key.charAt(((i - spaceCount) % key.length())) == alphabet[j]) {
+//                        System.out.print(alphabet[j]);
+                        encryptedString[i] += j;
+                    }
 
-            if ((int) encryptedString[i] > 90)
-                encryptedString[i] = (char) (((int) encryptedString[i] % 90) + 65);
-            else if ((int) encryptedString[i] > 122)
-                encryptedString[i] = (char) (((int) encryptedString[i] % 122) + 97);
+                if ((int) encryptedString[i] > 90)
+                    encryptedString[i] = (char) (((int) encryptedString[i] % 90) + 64);
+                else if ((int) encryptedString[i] > 122)
+                    encryptedString[i] = (char) (((int) encryptedString[i] % 122) + 96);
+            }
         }
         return new String(encryptedString);
     }
@@ -123,7 +132,7 @@ public abstract class ClackData {
      * A method to decrypt an encrypted string.
      *
      * @param inputStringToDecrypt The input string to decrypt.
-     * @param key The encryption key to use to decrypt the input string.
+     * @param key                  The encryption key to use to decrypt the input string.
      * @return The decrypted string.
      * @author Alex Cohen
      */
