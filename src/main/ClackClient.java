@@ -7,6 +7,10 @@ import data.MessageClackData;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.net.ConnectException;
+import java.net.NoRouteToHostException;
+import java.net.Socket;
+import java.net.UnknownHostException;
 import java.util.Objects;
 import java.util.Scanner;
 
@@ -120,10 +124,32 @@ public class ClackClient {
      */
     public void start() {
         inFromStd = new Scanner(System.in);
-        while (!closeConnection) {
-            readClientData();
-            dataToReceiveFromServer = dataToSendToServer;
-            printData();
+        try {
+            Socket skt = new Socket(hostName, port);
+            outToServer = new ObjectOutputStream(skt.getOutputStream());
+            inFromServer = new ObjectInputStream(skt.getInputStream());
+
+            while (!closeConnection) {
+                readClientData();
+                // while the connection is still open, the data that client entered to the server
+                // have the server echo it back
+                dataToReceiveFromServer = dataToSendToServer;
+                printData();
+            }
+
+            inFromStd.close();
+            skt.close();
+            outToServer.close();
+            inFromServer.close();
+
+        } catch ( UnknownHostException uhe ) {
+            System.err.println( "Host not known: " + uhe.getMessage() );
+        } catch ( NoRouteToHostException nrhe ) {
+            System.err.println( "Route to host not available" );
+        } catch ( ConnectException ce ) {
+            System.err.println( "Connection Refused" );
+        } catch ( IOException ioe ) {
+            System.err.println( "IO Exception generated: " + ioe.getMessage() );
         }
     }
 
