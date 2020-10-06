@@ -1,5 +1,6 @@
 package data;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -8,7 +9,7 @@ import java.util.Date;
  * @author Louis Keith
  */
 
-public abstract class ClackData {
+public abstract class ClackData implements Serializable {
 
     // constant declarations
     public final static int CONSTANT_LISTUSERS = 0;
