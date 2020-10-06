@@ -131,9 +131,8 @@ public class ClackClient {
 
             while (!closeConnection) {
                 readClientData();
-                // while the connection is still open, the data that client entered to the server
-                // have the server echo it back
-                dataToReceiveFromServer = dataToSendToServer;
+                sendData();
+                receiveData();
                 printData();
             }
 
