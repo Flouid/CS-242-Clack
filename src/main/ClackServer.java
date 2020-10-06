@@ -2,6 +2,8 @@ package main;
 
 import data.ClackData;
 
+import java.io.*;
+import java.net.Socket;
 import java.util.Objects;
 
 /**
@@ -19,6 +21,8 @@ public class ClackServer {
     private boolean closeConnection;
     private ClackData dataToReceiveFromClient;
     private ClackData dataToSendToClient;
+    private ObjectInputStream inFromClient;
+    private ObjectOutputStream outToClient;
 
 
     /**
@@ -27,9 +31,17 @@ public class ClackServer {
      * @param port integer representing port number on server connected to.
      */
     public ClackServer(int port) {
-        this.port = port;
+        try {
+            if (port < 1024)
+                throw new IllegalArgumentException("Port must be greater thatn 1024");
+            this.port = port;
 
-        dataToReceiveFromClient = dataToSendToClient = null;
+            dataToReceiveFromClient = dataToSendToClient = null;
+            inFromClient = null;
+            outToClient = null;
+        } catch (IllegalArgumentException iae) {
+            System.err.println(iae.getMessage());
+        }
     }
 
     /**
@@ -40,15 +52,39 @@ public class ClackServer {
     }
 
     public void start() {
+        try {
+            Socket skt = new Socket();
+            outToClient = new ObjectOutputStream(skt.getOutputStream());
+            inFromClient = new ObjectInputStream(skt.getInputStream());
 
+            while (!closeConnection) {
+                receiveData();
+//                dataToReceiveFromClient = receiveData();
+                dataToSendToClient = dataToReceiveFromClient;
+                sendData();
+            }
+            skt.close();
+            outToClient.close();
+            inFromClient.close();
+        } catch (IOException ioe) {
+            System.err.println(ioe.getMessage());
+        }
     }
 
     public void receiveData() {
-
+        try {
+            dataToReceiveFromClient = (ClackData) inFromClient.readObject();
+        } catch (IOException | ClassNotFoundException ioe) {
+            System.err.println(ioe.getMessage());
+        }
     }
 
     public void sendData() {
-
+        try {
+            outToClient.writeObject(dataToSendToClient);
+        } catch (IOException ioe) {
+            System.err.println(ioe.getMessage());
+        }
     }
 
     /**
@@ -100,6 +136,15 @@ public class ClackServer {
                 ", dataToReceiveFromClient=" + dataToReceiveFromClient +
                 ", dataToSendToClient=" + dataToSendToClient +
                 '}';
+    }
+
+    public static void main(String[] args) {
+        if (args.length == 0) {
+            ClackServer server = new ClackServer();
+            server.start();
+        } else if (args.length == 1) {
+            ClackServer server = new ClackServer(Integer.parseInt(args[0]));
+        }
     }
 }
 
