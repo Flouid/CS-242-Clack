@@ -196,12 +196,32 @@ public class ClackClient {
         }
     }
 
+    /**
+     * A method to write the data contained in dataToSendToServer
+     * to the output stream outToServer
+     *
+     * @author Louis Keith
+     */
     public void sendData() {
-
+        try {
+            outToServer.writeObject(dataToSendToServer);
+        } catch (IOException ioe) {
+            System.err.println(ioe.getMessage());
+        }
     }
 
+    /**
+     * A method to read the data contained in inFromServer
+     * into dataToReceiveFromServer
+     *
+     * @author Louis Keith
+     */
     public void receiveData() {
-
+        try {
+            dataToReceiveFromServer = (ClackData)inFromServer.readObject();
+        } catch (ClassNotFoundException | IOException cnf) {
+            System.err.println("Read failed: " + cnf.getMessage());
+        }
     }
 
     /**
