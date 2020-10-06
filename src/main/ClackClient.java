@@ -5,6 +5,8 @@ import data.FileClackData;
 import data.MessageClackData;
 
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.Objects;
 import java.util.Scanner;
 
@@ -25,6 +27,8 @@ public class ClackClient {
     private boolean closeConnection; //true is closed, false is open
     private ClackData dataToReceiveFromServer;
     private ClackData dataToSendToServer;
+    private ObjectInputStream inFromServer;
+    private ObjectOutputStream outToServer;
 
     private Scanner inFromStd;
     private final String key = "encryption";
@@ -41,6 +45,8 @@ public class ClackClient {
             this.userName = userName;
             this.hostName = hostName;
             this.port = port;
+            inFromServer = null;
+            outToServer = null;
 
             if (userName == null)
                 throw new IllegalArgumentException("Username cannot be null");
@@ -68,6 +74,8 @@ public class ClackClient {
             this.userName = userName;
             this.hostName = hostName;
             this.port = DEFAULT_PORT;
+            inFromServer = null;
+            outToServer = null;
 
             if (userName == null)
                 throw new IllegalArgumentException("Username cannot be null");
@@ -85,6 +93,9 @@ public class ClackClient {
      * @param userName String representing name of the client.
      */
     public ClackClient(String userName) {
+        inFromServer = null;
+        outToServer = null;
+
         try {
             this.userName = userName;
             if (userName == null)
