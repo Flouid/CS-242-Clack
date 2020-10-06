@@ -314,4 +314,39 @@ public class ClackClient {
                 ", dataToSendToClient=" + dataToSendToServer +
                 '}';
     }
+
+    /**
+     * A main method to test ClackClient with command line arguments
+     *
+     * @author Louis Keith
+     */
+    public static void main(String[] args) {
+        if (args.length == 0) {
+            ClackClient clackClient = new ClackClient();
+            clackClient.start();
+        }
+        else if (args.length == 1) {
+            // Take the first argument and split it into an array of strings based on the delimiters @ and :
+            String[] tokens = args[0].split("[@:]");
+            if (tokens.length == 1) { // case (i), only username given
+                ClackClient clackClient = new ClackClient(tokens[0]);
+                clackClient.start();
+            }
+            else if (tokens.length == 2) { // case (ii), username and hostname given
+                ClackClient clackClient = new ClackClient(tokens[0], tokens[1]);
+                clackClient.start();
+            } else { // case (iii), username, hostname, and port number given
+                try {
+                    int portNumber = Integer.parseInt(tokens[3]);
+                    ClackClient clackClient = new ClackClient(tokens[0], tokens[1], portNumber);
+                    clackClient.start();
+                } catch (NumberFormatException nfe) {
+                    System.err.println("The value given for port number is not an integer");
+                }
+            }
+        }
+        else {
+            System.err.println("Invalid number of arguments given, must be 0 or 1");
+        }
+    }
 }
