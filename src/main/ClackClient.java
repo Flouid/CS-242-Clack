@@ -5,6 +5,12 @@ import data.FileClackData;
 import data.MessageClackData;
 
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.ConnectException;
+import java.net.NoRouteToHostException;
+import java.net.Socket;
+import java.net.UnknownHostException;
 import java.util.Objects;
 import java.util.Scanner;
 
@@ -25,6 +31,8 @@ public class ClackClient {
     private boolean closeConnection; //true is closed, false is open
     private ClackData dataToReceiveFromServer;
     private ClackData dataToSendToServer;
+    private ObjectInputStream inFromServer;
+    private ObjectOutputStream outToServer;
 
     private Scanner inFromStd;
     private final String key = "encryption";
@@ -41,6 +49,8 @@ public class ClackClient {
             this.userName = userName;
             this.hostName = hostName;
             this.port = port;
+            inFromServer = null;
+            outToServer = null;
 
             if (userName == null)
                 throw new IllegalArgumentException("Username cannot be null");
@@ -68,6 +78,8 @@ public class ClackClient {
             this.userName = userName;
             this.hostName = hostName;
             this.port = DEFAULT_PORT;
+            inFromServer = null;
+            outToServer = null;
 
             if (userName == null)
                 throw new IllegalArgumentException("Username cannot be null");
@@ -85,6 +97,9 @@ public class ClackClient {
      * @param userName String representing name of the client.
      */
     public ClackClient(String userName) {
+        inFromServer = null;
+        outToServer = null;
+
         try {
             this.userName = userName;
             if (userName == null)
@@ -109,10 +124,31 @@ public class ClackClient {
      */
     public void start() {
         inFromStd = new Scanner(System.in);
-        while (!closeConnection) {
-            readClientData();
-            dataToReceiveFromServer = dataToSendToServer;
-            printData();
+        try {
+            Socket skt = new Socket(hostName, port);
+            outToServer = new ObjectOutputStream(skt.getOutputStream());
+            inFromServer = new ObjectInputStream(skt.getInputStream());
+
+            while (!closeConnection) {
+                readClientData();
+                sendData();
+                receiveData();
+                printData();
+            }
+
+            inFromStd.close();
+            skt.close();
+            outToServer.close();
+            inFromServer.close();
+
+        } catch ( UnknownHostException uhe ) {
+            System.err.println( "Host not known: " + uhe.getMessage() );
+        } catch ( NoRouteToHostException nrhe ) {
+            System.err.println( "Route to host not available" );
+        } catch ( ConnectException ce ) {
+            System.err.println( "Connection Refused" );
+        } catch ( IOException ioe ) {
+            System.err.println( "IO Exception generated: " + ioe.getMessage() );
         }
     }
 
@@ -159,12 +195,32 @@ public class ClackClient {
         }
     }
 
+    /**
+     * A method to write the data contained in dataToSendToServer
+     * to the output stream outToServer
+     *
+     * @author Louis Keith
+     */
     public void sendData() {
-
+        try {
+            outToServer.writeObject(dataToSendToServer);
+        } catch (IOException ioe) {
+            System.err.println(ioe.getMessage());
+        }
     }
 
+    /**
+     * A method to read the data contained in inFromServer
+     * into dataToReceiveFromServer
+     *
+     * @author Louis Keith
+     */
     public void receiveData() {
-
+        try {
+            dataToReceiveFromServer = (ClackData)inFromServer.readObject();
+        } catch (ClassNotFoundException | IOException cnf) {
+            System.err.println("Read failed: " + cnf.getMessage());
+        }
     }
 
     /**
