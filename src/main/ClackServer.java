@@ -53,6 +53,10 @@ public class ClackServer {
         this(DEFAULT_PORT);
     }
 
+    /**
+     * A method to start the connection to the server
+     */
+
     public void start() {
         try {
             ServerSocket serverSocket = new ServerSocket(DEFAULT_PORT);
@@ -76,10 +80,14 @@ public class ClackServer {
         }
     }
 
+    /**
+     * A method to receive data from the client
+     */
+
     public void receiveData() {
         try {
             dataToReceiveFromClient = (ClackData) inFromClient.readObject();
-            if(dataToReceiveFromClient.getType() == -1)
+            if (dataToReceiveFromClient.getType() == -1)
                 closeConnection = true;
 
         } catch (IOException | ClassNotFoundException ioe) {
@@ -87,6 +95,9 @@ public class ClackServer {
         }
     }
 
+    /**
+     * A method to send data to the client
+     */
     public void sendData() {
         try {
             outToClient.writeObject(dataToSendToClient);
@@ -146,6 +157,11 @@ public class ClackServer {
                 '}';
     }
 
+    /**
+     * A main method to test ClackSever with command line arguments
+     *
+     * @author Alex Cohen
+     */
     public static void main(String[] args) {
         if (args.length == 0) {
             ClackServer server = new ClackServer();
