@@ -34,7 +34,7 @@ public class ClackServer {
     public ClackServer(int port) {
         try {
             if (port < 1024)
-                throw new IllegalArgumentException("Port must be greater thatn 1024");
+                throw new IllegalArgumentException("Port must be greater than 1024");
             this.port = port;
 
             dataToReceiveFromClient = dataToSendToClient = null;
@@ -149,6 +149,9 @@ public class ClackServer {
         } else if (args.length == 1) {
             ClackServer server = new ClackServer(Integer.parseInt(args[0]));
             server.start();
+        }
+        else {
+            System.err.println("Invalid number of arguments given, must be 0 or 1");
         }
     }
 }
