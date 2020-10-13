@@ -64,6 +64,7 @@ public class ClackServer {
 
             while (!closeConnection) {
                 receiveData();
+                dataToSendToClient = dataToReceiveFromClient;
                 sendData();
             }
             skt.close();
