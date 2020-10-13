@@ -92,6 +92,7 @@ public class ClackClient {
 
     /**
      * General purpose constructor to set up username.
+     * Sets port to default 7000.
      * Sets host name to localhost, the server and client programs run on the same computer.
      *
      * @param userName String representing name of the client.
@@ -99,7 +100,7 @@ public class ClackClient {
     public ClackClient(String userName) {
         inFromServer = null;
         outToServer = null;
-
+        this.port = DEFAULT_PORT;
         try {
             this.userName = userName;
             if (userName == null)
