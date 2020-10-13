@@ -148,6 +148,7 @@ public class ClackServer {
             server.start();
         } else if (args.length == 1) {
             ClackServer server = new ClackServer(Integer.parseInt(args[0]));
+            server.start();
         }
     }
 }
