@@ -3,6 +3,7 @@ package main;
 import data.ClackData;
 
 import java.io.*;
+import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Objects;
 
@@ -53,14 +54,16 @@ public class ClackServer {
 
     public void start() {
         try {
-            Socket skt = new Socket();
+            ServerSocket serverSocket = new ServerSocket(DEFAULT_PORT);
+            System.out.println("Waiting for a client to make connection...");
+            Socket skt = serverSocket.accept();
+            System.out.println("Connection made, waiting for stuff...");
+
             outToClient = new ObjectOutputStream(skt.getOutputStream());
             inFromClient = new ObjectInputStream(skt.getInputStream());
 
             while (!closeConnection) {
                 receiveData();
-//                dataToReceiveFromClient = receiveData();
-                dataToSendToClient = dataToReceiveFromClient;
                 sendData();
             }
             skt.close();
