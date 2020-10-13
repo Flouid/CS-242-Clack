@@ -1,6 +1,7 @@
 package main;
 
 import data.ClackData;
+import data.MessageClackData;
 
 import java.io.*;
 import java.net.ServerSocket;
@@ -78,6 +79,9 @@ public class ClackServer {
     public void receiveData() {
         try {
             dataToReceiveFromClient = (ClackData) inFromClient.readObject();
+            if(dataToReceiveFromClient.getType() == -1)
+                closeConnection = true;
+
         } catch (IOException | ClassNotFoundException ioe) {
             System.err.println(ioe.getMessage());
         }
@@ -149,8 +153,7 @@ public class ClackServer {
         } else if (args.length == 1) {
             ClackServer server = new ClackServer(Integer.parseInt(args[0]));
             server.start();
-        }
-        else {
+        } else {
             System.err.println("Invalid number of arguments given, must be 0 or 1");
         }
     }

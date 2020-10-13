@@ -168,6 +168,7 @@ public class ClackClient {
             // check if the user wishes to close the connection and does so
             case "DONE": {
                 closeConnection = true;
+                dataToSendToServer = new MessageClackData(userName, "DONE", key, -1);
                 break;
             }
             // check if the user wishes to send a file name and attempts to do so
