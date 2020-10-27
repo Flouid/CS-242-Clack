@@ -7,6 +7,7 @@ import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
+import java.util.ArrayList;
 import java.util.Objects;
 
 /**
@@ -21,11 +22,10 @@ public class ClackServer {
 
     // instance variable declarations
     private int port;
-    private boolean closeConnection;
+    private boolean closeConnection; //true is closed, false is open
+    private ArrayList<ServerSideClientIO> serverSideClientIOList;
     private ClackData dataToReceiveFromClient;
     private ClackData dataToSendToClient;
-    private ObjectInputStream inFromClient;
-    private ObjectOutputStream outToClient;
 
 
     /**
@@ -40,8 +40,6 @@ public class ClackServer {
             this.port = port;
 
             dataToReceiveFromClient = dataToSendToClient = null;
-            inFromClient = null;
-            outToClient = null;
         } catch (IllegalArgumentException iae) {
             System.err.println(iae.getMessage());
         }
@@ -57,7 +55,8 @@ public class ClackServer {
     /**
      * A method to start the connection to the server
      */
-
+// needs to be changed to create and run threads wrapped around ServerSideClientIO
+// runnable objects
     public void start() {
         try {
             ServerSocket serverSocket = new ServerSocket(DEFAULT_PORT);
@@ -65,20 +64,14 @@ public class ClackServer {
             Socket skt = serverSocket.accept();
             System.out.println("Connection made, waiting for stuff...");
 
-            outToClient = new ObjectOutputStream(skt.getOutputStream());
-            inFromClient = new ObjectInputStream(skt.getInputStream());
 
             while (!closeConnection) {
-                receiveData();
                 if (closeConnection) {
                     break;
                 }
                 dataToSendToClient = dataToReceiveFromClient;
-                sendData();
             }
             skt.close();
-            outToClient.close();
-            inFromClient.close();
         } catch (SocketException se) {
             closeConnection = true;
             System.err.println("Socket Exception: " + se.getMessage());
@@ -89,30 +82,23 @@ public class ClackServer {
     }
 
     /**
-     * A method to receive data from the client
+     * A method to broadcast data to the clients
+     *
+     * @param dataToBroadcastToClients ClackData object representing the data that is being broadcasted
      */
+    synchronized public void broadcast(ClackData dataToBroadcastToClients) {
 
-    public void receiveData() {
-        try {
-            dataToReceiveFromClient = (ClackData) inFromClient.readObject();
-            if (dataToReceiveFromClient.getType() == -1)
-                closeConnection = true;
-
-        } catch (IOException | ClassNotFoundException ioe) {
-            System.err.println(ioe.getMessage());
-        }
     }
 
     /**
-     * A method to send data to the client
+     * A method to remove a client from the server
+     *
+     * @param serverSideClientToRemove ServerSideClientIO object representing the client being removed
      */
-    public void sendData() {
-        try {
-            outToClient.writeObject(dataToSendToClient);
-        } catch (IOException ioe) {
-            System.err.println(ioe.getMessage());
-        }
+    synchronized public void remove(ServerSideClientIO serverSideClientToRemove) {
+
     }
+
 
     /**
      * A method to return a server's port
