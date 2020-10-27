@@ -130,11 +130,11 @@ public class ClackClient {
             outToServer = new ObjectOutputStream(skt.getOutputStream());
             inFromServer = new ObjectInputStream(skt.getInputStream());
 
+            (new Thread(new ClientSideServerListener(this))).start();
+
             while (!closeConnection) {
                 readClientData();
                 sendData();
-                receiveData();
-                printData();
             }
 
             inFromStd.close();
@@ -151,6 +151,17 @@ public class ClackClient {
         } catch (IOException ioe) {
             System.err.println("IO Exception generated: " + ioe.getMessage());
         }
+    }
+
+    /**
+     * Public helper method to determine if the connection is closed or not.
+     * This method may or may not be temporary.
+     *
+     * @return boolean representing whether or not the connection is closed.
+     * @author Louis Keith
+     */
+    public boolean isCloseConnection() {
+        return closeConnection;
     }
 
     /**
