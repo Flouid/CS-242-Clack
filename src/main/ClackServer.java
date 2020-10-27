@@ -6,6 +6,7 @@ import data.MessageClackData;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketException;
 import java.util.Objects;
 
 /**
@@ -69,14 +70,21 @@ public class ClackServer {
 
             while (!closeConnection) {
                 receiveData();
+                if (closeConnection) {
+                    break;
+                }
                 dataToSendToClient = dataToReceiveFromClient;
                 sendData();
             }
             skt.close();
             outToClient.close();
             inFromClient.close();
+        } catch (SocketException se) {
+            closeConnection = true;
+            System.err.println("Socket Exception: " + se.getMessage());
         } catch (IOException ioe) {
-            System.err.println(ioe.getMessage());
+            closeConnection = true;
+            System.err.println("IO Exception: " + ioe.getMessage());
         }
     }
 
