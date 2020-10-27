@@ -154,6 +154,17 @@ public class ClackClient {
     }
 
     /**
+     * Public helper method to determine if the connection is closed or not.
+     * This method may or may not be temporary.
+     *
+     * @return boolean representing whether or not the connection is closed.
+     * @author Louis Keith
+     */
+    public boolean isCloseConnection() {
+        return closeConnection;
+    }
+
+    /**
      * A method to get a command from the user and perform the appropriate action.
      * Reads data into the dataToSendToServer object and initializes it as FileClackData or MessageClackData.
      *
