@@ -130,14 +130,7 @@ public class ClackClient {
             outToServer = new ObjectOutputStream(skt.getOutputStream());
             inFromServer = new ObjectInputStream(skt.getInputStream());
 
-            ClackClient thisClient = this;
-
-            (new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    new ClientSideServerListener(thisClient);
-                }
-            })).start();
+            (new Thread(new ClientSideServerListener(this))).start();
 
             while (!closeConnection) {
                 readClientData();
