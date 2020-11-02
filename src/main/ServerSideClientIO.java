@@ -27,6 +27,9 @@ public class ServerSideClientIO implements Runnable {
     private ClackServer server;
     private Socket clientSocket;
 
+    private boolean isUserNameSet;
+    private String connectedUserName;
+
     /**
      * General purpose constructor that sets up a server with a socket for connecting to a client.
      *
@@ -41,6 +44,9 @@ public class ServerSideClientIO implements Runnable {
         dataToReceiveFromClient = dataToSendToClient = null;
         inFromClient = null;
         outToClient = null;
+
+        isUserNameSet = false;
+        connectedUserName = null;
     }
 
     /**
@@ -55,6 +61,9 @@ public class ServerSideClientIO implements Runnable {
 
             while (!closeConnection) {
                 receiveData();
+                if (!isUserNameSet) {
+                    connectedUserName = dataToReceiveFromClient.getUserName();
+                }
                 if (dataToReceiveFromClient.getType() != 0) {
                     this.server.broadcast(dataToReceiveFromClient);
                 }
