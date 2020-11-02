@@ -24,8 +24,6 @@ public class ClackServer {
     private int port;
     private boolean closeConnection; //true is closed, false is open
     private ArrayList<ServerSideClientIO> serverSideClientIOList;
-    private ClackData dataToReceiveFromClient;
-    private ClackData dataToSendToClient;
 
 
     /**
@@ -38,8 +36,8 @@ public class ClackServer {
             if (port < 1024)
                 throw new IllegalArgumentException("Port must be greater than 1024");
             this.port = port;
+            serverSideClientIOList = new ArrayList<ServerSideClientIO>();
 
-            dataToReceiveFromClient = dataToSendToClient = null;
         } catch (IllegalArgumentException iae) {
             System.err.println(iae.getMessage());
         }
@@ -61,17 +59,19 @@ public class ClackServer {
         try {
             ServerSocket serverSocket = new ServerSocket(DEFAULT_PORT);
             System.out.println("Waiting for a client to make connection...");
-            Socket skt = serverSocket.accept();
-            System.out.println("Connection made, waiting for stuff...");
-
-
+            Socket skt;
+            ServerSideClientIO obj;
             while (!closeConnection) {
+                skt = serverSocket.accept();
+                System.out.println("Connection made, waiting for stuff...");
+                if (skt.isConnected()) {
+//                    obj = new ServerSideClientIO();
+//                    serverSideClientIOList.add(obj);
+                }
                 if (closeConnection) {
                     break;
                 }
-                dataToSendToClient = dataToReceiveFromClient;
             }
-            skt.close();
         } catch (SocketException se) {
             closeConnection = true;
             System.err.println("Socket Exception: " + se.getMessage());
@@ -87,7 +87,10 @@ public class ClackServer {
      * @param dataToBroadcastToClients ClackData object representing the data that is being broadcasted
      */
     synchronized public void broadcast(ClackData dataToBroadcastToClients) {
-
+        for (ServerSideClientIO s : serverSideClientIOList) {
+            s.setDataToSendToClient(dataToBroadcastToClients);
+            s.sendData();
+        }
     }
 
     /**
@@ -96,7 +99,7 @@ public class ClackServer {
      * @param serverSideClientToRemove ServerSideClientIO object representing the client being removed
      */
     synchronized public void remove(ServerSideClientIO serverSideClientToRemove) {
-
+        serverSideClientIOList.remove(serverSideClientToRemove);
     }
 
 
@@ -121,9 +124,7 @@ public class ClackServer {
         if (other == null || getClass() != other.getClass()) return false;
         ClackServer server = (ClackServer) other;
         return port == server.port &&
-                closeConnection == server.closeConnection &&
-                Objects.equals(dataToReceiveFromClient, server.dataToReceiveFromClient) &&
-                Objects.equals(dataToSendToClient, server.dataToSendToClient);
+                closeConnection == server.closeConnection;
     }
 
     /**
@@ -133,7 +134,7 @@ public class ClackServer {
      */
     @Override
     public int hashCode() {
-        return Objects.hash(port, closeConnection, dataToReceiveFromClient, dataToSendToClient);
+        return Objects.hash(port, closeConnection);
     }
 
     /**
@@ -143,11 +144,9 @@ public class ClackServer {
      */
     @Override
     public String toString() {
-        return "ClackServer{" +
+        return "ClackSe+rver{" +
                 "port=" + port +
                 ", closeConnection=" + closeConnection +
-                ", dataToReceiveFromClient=" + dataToReceiveFromClient +
-                ", dataToSendToClient=" + dataToSendToClient +
                 '}';
     }
 
