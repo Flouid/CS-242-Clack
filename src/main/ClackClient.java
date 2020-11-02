@@ -194,9 +194,9 @@ public class ClackClient {
                 }
                 break;
             }
-            // check if the user wishes to list users, for now do nothing
+            // check if the user wishes to list users, tells it to do so
             case "LISTUSERS": {
-                // do nothing
+                dataToSendToServer = new MessageClackData(userName, "LISTUSERS", key, 0);
                 break;
             }
             // if the input is anything else, read the rest of the line and send it as a message

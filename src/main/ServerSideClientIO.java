@@ -44,7 +44,12 @@ public class ServerSideClientIO implements Runnable{
 
             while(!closeConnection){
                 receiveData();
-                this.server.broadcast(dataToReceiveFromClient);
+                if (dataToReceiveFromClient.getType() != 0) {
+                    this.server.broadcast(dataToReceiveFromClient);
+                }
+                else {
+                    // show just the specified client the list of users using the listClients method.
+                }
             }
 
         } catch (IOException ioe) {
@@ -55,12 +60,12 @@ public class ServerSideClientIO implements Runnable{
     /**
      * A method to receive data from the client
      */
-
     public void receiveData() {
         try {
             dataToReceiveFromClient = (ClackData) inFromClient.readObject();
             if (dataToReceiveFromClient.getType() == -1)
                 closeConnection = true;
+
 
         } catch (IOException | ClassNotFoundException ioe) {
             System.err.println(ioe.getMessage());

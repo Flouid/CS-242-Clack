@@ -76,6 +76,13 @@ public class ClackServer {
         }
     }
 
+    synchronized public void listClients(ClackClient client) {
+        for (ServerSideClientIO s : serverSideClientIOList) {
+            // iterate through the serverSideClientIOList and get each username from those clients.
+            // add those names to some kind of list (ArrayList) and return it. (currently void so no errors)
+        }
+    }
+
     /**
      * A method to broadcast data to the clients
      *
@@ -139,7 +146,7 @@ public class ClackServer {
      */
     @Override
     public String toString() {
-        return "ClackSe+rver{" +
+        return "ClackServer{" +
                 "port=" + port +
                 ", closeConnection=" + closeConnection +
                 '}';
