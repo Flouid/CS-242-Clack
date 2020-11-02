@@ -2,6 +2,7 @@ package main;
 
 
 import data.ClackData;
+import data.MessageClackData;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -36,7 +37,6 @@ public class ServerSideClientIO implements Runnable {
      * @param server       A ClackServer object representing the server.
      * @param clientSocket A Socket object that connects with the client.
      */
-
     public ServerSideClientIO(ClackServer server, Socket clientSocket) {
         this.server = server;
         this.clientSocket = clientSocket;
@@ -52,7 +52,6 @@ public class ServerSideClientIO implements Runnable {
     /**
      * A method for retrieving data from the client and broadcasting it to the client.
      */
-
     @Override
     public void run() {
         try {
@@ -63,12 +62,15 @@ public class ServerSideClientIO implements Runnable {
                 receiveData();
                 if (!isUserNameSet) {
                     connectedUserName = dataToReceiveFromClient.getUserName();
+                    isUserNameSet = true;
                 }
                 if (dataToReceiveFromClient.getType() != 0) {
                     this.server.broadcast(dataToReceiveFromClient);
                 }
                 else {
-                    // show just the specified client the list of users using the listClients method.
+                    String clientList = server.listClients();
+                    dataToSendToClient = new MessageClackData(connectedUserName, clientList, 2);
+                    sendData();
                 }
             }
 
@@ -86,7 +88,6 @@ public class ServerSideClientIO implements Runnable {
             if (dataToReceiveFromClient.getType() == -1)
                 closeConnection = true;
 
-
         } catch (IOException | ClassNotFoundException ioe) {
             System.err.println(ioe.getMessage());
         }
@@ -101,6 +102,10 @@ public class ServerSideClientIO implements Runnable {
         } catch (IOException ioe) {
             System.err.println(ioe.getMessage());
         }
+    }
+
+    public ClackData getDataToSendToClient() {
+        return dataToSendToClient;
     }
 
     /**
