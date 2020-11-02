@@ -16,7 +16,7 @@ import java.net.SocketException;
  * @author Alex Cohen
  */
 
-public class ServerSideClientIO implements Runnable{
+public class ServerSideClientIO implements Runnable {
 
     // instance variable declarations
     private boolean closeConnection; //true is closed, false is open
@@ -27,6 +27,13 @@ public class ServerSideClientIO implements Runnable{
     private ClackServer server;
     private Socket clientSocket;
 
+    /**
+     * General purpose constructor that sets up a server with a socket for connecting to a client.
+     *
+     * @param server       A ClackServer object representing the server.
+     * @param clientSocket A Socket object that connects with the client.
+     */
+
     public ServerSideClientIO(ClackServer server, Socket clientSocket) {
         this.server = server;
         this.clientSocket = clientSocket;
@@ -36,13 +43,17 @@ public class ServerSideClientIO implements Runnable{
         outToClient = null;
     }
 
+    /**
+     * A method for retrieving data from the client and broadcasting it to the client.
+     */
+
     @Override
     public void run() {
         try {
             inFromClient = new ObjectInputStream(clientSocket.getInputStream());
             outToClient = new ObjectOutputStream(clientSocket.getOutputStream());
 
-            while(!closeConnection){
+            while (!closeConnection) {
                 receiveData();
                 if (dataToReceiveFromClient.getType() != 0) {
                     this.server.broadcast(dataToReceiveFromClient);
