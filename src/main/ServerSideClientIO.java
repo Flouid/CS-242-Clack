@@ -50,35 +50,6 @@ public class ServerSideClientIO {
             System.err.println(ioe.getMessage());
         }
     }
-//    public void start() {
-//        try {
-//            ServerSocket serverSocket = new ServerSocket(DEFAULT_PORT);
-//            System.out.println("Waiting for a client to make connection...");
-//            Socket skt = serverSocket.accept();
-//            System.out.println("Connection made, waiting for stuff...");
-//
-//            outToClient = new ObjectOutputStream(skt.getOutputStream());
-//            inFromClient = new ObjectInputStream(skt.getInputStream());
-//
-//            while (!closeConnection) {
-//                receiveData();
-//                if (closeConnection) {
-//                    break;
-//                }
-//                dataToSendToClient = dataToReceiveFromClient;
-//                sendData();
-//            }
-//            skt.close();
-//            outToClient.close();
-//            inFromClient.close();
-//        } catch (SocketException se) {
-//            closeConnection = true;
-//            System.err.println("Socket Exception: " + se.getMessage());
-//        } catch (IOException ioe) {
-//            closeConnection = true;
-//            System.err.println("IO Exception: " + ioe.getMessage());
-//        }
-//    }
 
     /**
      * A method to receive data from the client

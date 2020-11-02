@@ -59,19 +59,15 @@ public class ClackServer {
         try {
             ServerSocket serverSocket = new ServerSocket(DEFAULT_PORT);
             System.out.println("Waiting for a client to make connection...");
-            Socket skt;
-            ServerSideClientIO obj;
             while (!closeConnection) {
-                skt = serverSocket.accept();
+                Socket skt = serverSocket.accept();
                 System.out.println("Connection made, waiting for stuff...");
-                if (skt.isConnected()) {
-//                    obj = new ServerSideClientIO();
-//                    serverSideClientIOList.add(obj);
-                }
-                if (closeConnection) {
-                    break;
-                }
+                ServerSideClientIO obj = new ServerSideClientIO(this, skt);
+                serverSideClientIOList.add(obj);
+                Thread clientThread = new Thread(obj);
+                clientThread.start();
             }
+            serverSocket.close();
         } catch (SocketException se) {
             closeConnection = true;
             System.err.println("Socket Exception: " + se.getMessage());
