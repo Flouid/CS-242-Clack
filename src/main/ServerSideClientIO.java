@@ -41,6 +41,11 @@ public class ServerSideClientIO {
             inFromClient = new ObjectInputStream(clientSocket.getInputStream());
             outToClient = new ObjectOutputStream(clientSocket.getOutputStream());
 
+            while(!closeConnection){
+                receiveData();
+                this.server.broadcast(dataToReceiveFromClient);
+            }
+
         } catch (IOException ioe) {
             System.err.println(ioe.getMessage());
         }
