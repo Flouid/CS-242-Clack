@@ -53,8 +53,7 @@ public class ClackServer {
     /**
      * A method to start the connection to the server
      */
-// needs to be changed to create and run threads wrapped around ServerSideClientIO
-// runnable objects
+
     public void start() {
         try {
             ServerSocket serverSocket = new ServerSocket(DEFAULT_PORT);

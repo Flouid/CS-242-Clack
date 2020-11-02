@@ -16,7 +16,7 @@ import java.net.SocketException;
  * @author Alex Cohen
  */
 
-public class ServerSideClientIO {
+public class ServerSideClientIO implements Runnable{
 
     // instance variable declarations
     private boolean closeConnection; //true is closed, false is open
@@ -36,6 +36,7 @@ public class ServerSideClientIO {
         outToClient = null;
     }
 
+    @Override
     public void run() {
         try {
             inFromClient = new ObjectInputStream(clientSocket.getInputStream());
