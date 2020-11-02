@@ -144,7 +144,7 @@ public class ClackServer {
      */
     @Override
     public String toString() {
-        return "ClackSe+rver{" +
+        return "ClackServer{" +
                 "port=" + port +
                 ", closeConnection=" + closeConnection +
                 '}';
