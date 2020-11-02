@@ -37,7 +37,13 @@ public class ServerSideClientIO {
     }
 
     public void run() {
+        try {
+            inFromClient = new ObjectInputStream(clientSocket.getInputStream());
+            outToClient = new ObjectOutputStream(clientSocket.getOutputStream());
 
+        } catch (IOException ioe) {
+            System.err.println(ioe.getMessage());
+        }
     }
 //    public void start() {
 //        try {
