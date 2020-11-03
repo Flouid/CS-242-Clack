@@ -29,10 +29,10 @@ public class ClackGUI extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         ArrayList<String> participants = new ArrayList<String>();
-//        participants.add("Alex");
-//        participants.add("Louis");
-//        participants.add("Dohan");
-//        participants.add("Natasha");
+        participants.add("Alex");
+        participants.add("Louis");
+        participants.add("Dohan");
+        participants.add("Natasha");
         window = primaryStage;
         GridPane layout = new GridPane();
         TextField textField = new TextField();
@@ -46,6 +46,8 @@ public class ClackGUI extends Application {
         TextArea messages = new TextArea();
         messages.setMaxWidth(150);
         messages.setPrefHeight(140);
+        messages.setMouseTransparent(true);
+        messages.setFocusTraversable(false);
 
         layout.setPadding(new Insets(10, 10, 10, 10));
         layout.setVgap(10);
@@ -57,7 +59,8 @@ public class ClackGUI extends Application {
         GridPane.setConstraints(textField, 1, 1);
 
         send.setOnAction(e -> {
-            System.out.println(textField.getText());
+            messages.appendText(textField.getText() + "\n");
+            textField.clear();
         });
 
 
