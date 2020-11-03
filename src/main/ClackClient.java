@@ -51,6 +51,8 @@ public class ClackClient {
             this.port = port;
             inFromServer = null;
             outToServer = null;
+            closeConnection = false;
+            dataToReceiveFromServer = dataToSendToServer = null;
 
             if (userName == null)
                 throw new IllegalArgumentException("Username cannot be null");
@@ -61,9 +63,6 @@ public class ClackClient {
         } catch (IllegalArgumentException iae) {
             System.err.println("Illegal argument found: " + iae.getMessage());
         }
-
-        closeConnection = false;
-        dataToReceiveFromServer = dataToSendToServer = null;
     }
 
     /**
@@ -133,6 +132,7 @@ public class ClackClient {
             (new Thread(new ClientSideServerListener(this))).start();
 
             while (!closeConnection) {
+                System.out.println("test");
                 readClientData();
                 sendData();
             }
@@ -184,6 +184,7 @@ public class ClackClient {
             }
             // check if the user wishes to send a file name and attempts to do so
             case "SENDFILE": {
+                System.out.println("Please enter the file name:\n");
                 String fileName = inFromStd.next();
                 dataToSendToServer = new FileClackData(userName, fileName, 3); // 3 denotes SEND_FILE
                 try {
