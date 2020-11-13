@@ -17,12 +17,14 @@ import java.util.Objects;
  */
 
 public class ClackServer {
+
     // default values
     private final static int DEFAULT_PORT = 7000;
+    private final static int DEFAULT_HASH_CODE = 11;
 
     // instance variable declarations
     private int port;
-    private boolean closeConnection; //true is closed, false is open
+    private boolean closeConnection; // true is closed, false is open
     private ArrayList<ServerSideClientIO> serverSideClientIOList;
 
 
@@ -33,10 +35,13 @@ public class ClackServer {
      */
     public ClackServer(int port) {
         try {
-            if (port < 1024)
+            if (port < 1024) {
                 throw new IllegalArgumentException("Port must be greater than 1024");
+            }
+
             this.port = port;
-            serverSideClientIOList = new ArrayList<ServerSideClientIO>();
+            closeConnection = false;
+            serverSideClientIOList = new ArrayList<>();
 
         } catch (IllegalArgumentException iae) {
             System.err.println(iae.getMessage());
@@ -53,25 +58,19 @@ public class ClackServer {
     /**
      * A method to start the connection to the server
      */
-// needs to be changed to create and run threads wrapped around ServerSideClientIO
-// runnable objects
     public void start() {
         try {
-            ServerSocket serverSocket = new ServerSocket(DEFAULT_PORT);
-            System.out.println("Waiting for a client to make connection...");
-            Socket skt;
-            ServerSideClientIO obj;
+
+            ServerSocket serverSocket = new ServerSocket(port);
             while (!closeConnection) {
-                skt = serverSocket.accept();
-                System.out.println("Connection made, waiting for stuff...");
-                if (skt.isConnected()) {
-//                    obj = new ServerSideClientIO();
-//                    serverSideClientIOList.add(obj);
-                }
-                if (closeConnection) {
-                    break;
-                }
+                Socket skt = serverSocket.accept();
+                ServerSideClientIO obj = new ServerSideClientIO(this, skt);
+                serverSideClientIOList.add(obj);
+                Thread clientThread = new Thread(obj);
+                clientThread.start();
             }
+            serverSocket.close();
+
         } catch (SocketException se) {
             closeConnection = true;
             System.err.println("Socket Exception: " + se.getMessage());
@@ -100,6 +99,21 @@ public class ClackServer {
      */
     synchronized public void remove(ServerSideClientIO serverSideClientToRemove) {
         serverSideClientIOList.remove(serverSideClientToRemove);
+    }
+
+    /**
+     * A method to return a string that contains a list of all of the currently selected users.
+     *
+     * @return A string containing a list of all current users.
+     */
+    synchronized public String getUsers() {
+        StringBuilder users = new StringBuilder();
+        for (ServerSideClientIO serverSideClient : serverSideClientIOList) {
+            users.append("[");
+            users.append(serverSideClient.getUserName());
+            users.append("] ");
+        }
+        return users.toString();
     }
 
 
@@ -134,7 +148,11 @@ public class ClackServer {
      */
     @Override
     public int hashCode() {
-        return Objects.hash(port, closeConnection);
+        int closeConnectionInt = 0;
+        if (closeConnection) {
+            closeConnectionInt = 1;
+        }
+        return DEFAULT_HASH_CODE + closeConnectionInt + port;
     }
 
     /**
@@ -160,8 +178,13 @@ public class ClackServer {
             ClackServer server = new ClackServer();
             server.start();
         } else if (args.length == 1) {
-            ClackServer server = new ClackServer(Integer.parseInt(args[0]));
-            server.start();
+            try {
+                int portNumber = Integer.parseInt(args[0]);
+                ClackServer server = new ClackServer(portNumber);
+                server.start();
+            } catch (NumberFormatException nfe) {
+                System.err.println("The argument provided was not an integer");
+            }
         } else {
             System.err.println("Invalid number of arguments given, must be 0 or 1");
         }
