@@ -12,9 +12,10 @@ public class MessageClackData extends ClackData {
 
     // default values
     private final static String DEFAULT_MESSAGE = "";
+    private final static int DEFAULT_HASH_CODE = 3;
 
     // instance variable declarations
-    private String message;
+    private final String message;
 
     /**
      * General purpose constructor to set up username, message, and type.
@@ -75,9 +76,7 @@ public class MessageClackData extends ClackData {
      */
     @Override
     public int hashCode() {
-        int hashCode = 3;
-        hashCode += getType() + getUserName().hashCode() + message.hashCode();
-        return hashCode;
+        return DEFAULT_HASH_CODE + getType() + getUserName().hashCode() + message.hashCode();
     }
 
     /**
@@ -88,10 +87,14 @@ public class MessageClackData extends ClackData {
      */
     @Override
     public boolean equals(Object other) {
-        if (this == other) return true;
-        if (other == null || getClass() != other.getClass()) return false;
+        if (this == other) {
+            return true;
+        }
+        if (other == null || getClass() != other.getClass()) {
+            return false;
+        }
 
-        MessageClackData otherMessage = (MessageClackData) other;
+        MessageClackData otherMessage = (MessageClackData)other;
         return message.equals(otherMessage.getData()) &&
                 getUserName().equals(otherMessage.getUserName()) &&
                 getType() == otherMessage.getType();
@@ -104,6 +107,6 @@ public class MessageClackData extends ClackData {
      */
     @Override
     public String toString() {
-        return getUserName() + " sent a message: " + message + "\nSent on: " + getDate() + " with type: " + getType();
+        return getUserName() + " on " + getDate() + "\n" + message + "\nType: " + getType();
     }
 }
