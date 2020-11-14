@@ -172,7 +172,6 @@ public class ClackClient {
                 break;
             }
             case "SENDFILE": {
-                System.out.println("Please enter the file name:\n");
                 String fileName = inFromStd.next();
                 dataToSendToServer = new FileClackData(userName, fileName, ClackData.CONSTANT_SENDFILE);
                 try {
