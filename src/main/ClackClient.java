@@ -124,7 +124,6 @@ public class ClackClient {
             sendData();
 
             while (!closeConnection) {
-                System.out.println("test");
                 readClientData();
                 sendData();
             }
