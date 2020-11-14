@@ -13,7 +13,8 @@ public class FileClackData extends ClackData {
 
     // default values
     private final static String DEFAULT_FILE_NAME = "";
-    private final static String DEFAULT_FILE_CONTENTS = "";
+    private final static String DEFAULT_FILE_CONTENTS = null;
+    private final static int DEFAULT_HASH_CODE = 5;
 
     // instance variable declarations
     private String fileName;
@@ -29,7 +30,7 @@ public class FileClackData extends ClackData {
     public FileClackData(String userName, String fileName, int type) {
         super(userName, type);
         this.fileName = fileName;
-        fileContents = null;
+        fileContents = DEFAULT_FILE_CONTENTS;
     }
 
     /**
@@ -101,7 +102,7 @@ public class FileClackData extends ClackData {
                 stringBuilder.append(System.getProperty("line.separator"));
             }
 
-            // remove the extra line separator at the end of the string.
+            // remove the extra line separator at the end of the string
             // this will never throw an IndexOutOfBoundsException as the index is by definition less than the length
             stringBuilder.deleteCharAt(stringBuilder.length() - 1);
             bufferedReader.close();
@@ -180,7 +181,8 @@ public class FileClackData extends ClackData {
      */
     @Override
     public int hashCode() {
-        return Objects.hash(getType(), getUserName(), fileContents, fileName);
+        return DEFAULT_HASH_CODE + getUserName().hashCode() + getType() +
+                fileContents.hashCode() + fileName.hashCode();
     }
 
     /**
@@ -192,11 +194,18 @@ public class FileClackData extends ClackData {
 
     @Override
     public boolean equals(Object other) {
-        if (this == other) return true;
-        if (other == null || getClass() != other.getClass()) return false;
-        FileClackData fileData = (FileClackData) other;
-        return Objects.equals(fileName, fileData.fileName) &&
-                Objects.equals(fileContents, fileData.fileContents);
+        if (this == other) {
+            return true;
+        }
+        if (other == null || getClass() != other.getClass()) {
+            return false;
+        }
+
+        FileClackData fileData = (FileClackData)other;
+        return getUserName().equals(fileData.getUserName()) &&
+                getType() == fileData.getType() &&
+                fileContents.equals(fileData.getData()) &&
+                fileName.equals(fileData.getFileName());
     }
 
     /**
@@ -206,6 +215,7 @@ public class FileClackData extends ClackData {
      */
     @Override
     public String toString() {
-        return getUserName() + " sent a file: " + fileName + "\nwith contents: " + fileContents + "\nwith type: " + getType();
+        return getUserName() + " sent: " + fileName + " on " + getDate() +
+                "\n" + fileContents + "\n" + "Type: " + getType();
     }
 }

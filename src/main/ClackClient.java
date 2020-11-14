@@ -20,17 +20,21 @@ import java.util.Scanner;
  * @author Alex Cohen
  */
 public class ClackClient {
+
     // default values
     private final static int DEFAULT_PORT = 7000;
     private final static String DEFAULT_NAME = "Anonymous";
+    private final static boolean DEFAULT_CLOSE_CONNECTION = false;
+    private final static String DEFAULT_HOST_NAME = "localhost";
+    private final static int DEFAULT_HASH_CODE = 7;
 
     // instance variable declarations
     private String userName;
     private String hostName;
     private int port;
-    private boolean closeConnection; //true is closed, false is open
-    private ClackData dataToReceiveFromServer;
+    private boolean closeConnection; // true when connection is closed, false when open
     private ClackData dataToSendToServer;
+    private ClackData dataToReceiveFromServer;
     private ObjectInputStream inFromServer;
     private ObjectOutputStream outToServer;
 
@@ -49,22 +53,28 @@ public class ClackClient {
             this.userName = userName;
             this.hostName = hostName;
             this.port = port;
+            closeConnection = DEFAULT_CLOSE_CONNECTION;
+            dataToSendToServer = dataToReceiveFromServer = null;
             inFromServer = null;
             outToServer = null;
+            closeConnection = false;
+            dataToReceiveFromServer = dataToSendToServer = null;
 
-            if (userName == null)
+            if (userName == null) {
                 throw new IllegalArgumentException("Username cannot be null");
-            if (hostName == null)
+            }
+            if (hostName == null) {
                 throw new IllegalArgumentException("Hostname cannot be null");
-            if (port < 1024)
+            }
+            if (port < 1024) {
                 throw new IllegalArgumentException("Port must be at least 1024");
+            }
         } catch (IllegalArgumentException iae) {
-            System.err.println("Illegal argument found: " + iae.getMessage());
+            System.err.println("Illegal arguments found: " + iae.getMessage());
         }
 
-        closeConnection = false;
-        dataToReceiveFromServer = dataToSendToServer = null;
     }
+
 
     /**
      * General purpose constructor to set up username, hostname.
@@ -74,20 +84,7 @@ public class ClackClient {
      * @param hostName String representing name of the computer representing the server.
      */
     public ClackClient(String userName, String hostName) {
-        try {
-            this.userName = userName;
-            this.hostName = hostName;
-            this.port = DEFAULT_PORT;
-            inFromServer = null;
-            outToServer = null;
-
-            if (userName == null)
-                throw new IllegalArgumentException("Username cannot be null");
-            if (hostName == null)
-                throw new IllegalArgumentException("Hostname cannot be null");
-        } catch (IllegalArgumentException iae) {
-            System.err.println("Illegal argument found: " + iae.getMessage());
-        }
+        this(userName, hostName, DEFAULT_PORT);
     }
 
     /**
@@ -98,17 +95,7 @@ public class ClackClient {
      * @param userName String representing name of the client.
      */
     public ClackClient(String userName) {
-        inFromServer = null;
-        outToServer = null;
-        this.port = DEFAULT_PORT;
-        try {
-            this.userName = userName;
-            if (userName == null)
-                throw new IllegalArgumentException("Username cannot be null");
-        } catch (IllegalArgumentException iae) {
-            System.err.println("Illegal argument found: " + iae.getMessage());
-        }
-        hostName = "localhost";
+        this(userName, DEFAULT_HOST_NAME);
     }
 
     /**
@@ -123,7 +110,7 @@ public class ClackClient {
      *
      * @author Louis Keith
      */
-    public void start() {
+    public synchronized void start() {
         inFromStd = new Scanner(System.in);
         try {
             Socket skt = new Socket(hostName, port);
@@ -132,24 +119,27 @@ public class ClackClient {
 
             (new Thread(new ClientSideServerListener(this))).start();
 
+            // send the username to the server
+            dataToSendToServer = new MessageClackData(userName, userName, key, ClackData.CONSTANT_SENDMESSAGE);
+            sendData();
+
             while (!closeConnection) {
+                System.out.println("test");
                 readClientData();
                 sendData();
             }
 
             inFromStd.close();
             skt.close();
-            outToServer.close();
-            inFromServer.close();
 
         } catch (UnknownHostException uhe) {
             System.err.println("Host not known: " + uhe.getMessage());
-        } catch (NoRouteToHostException nrhe) {
-            System.err.println("Route to host not available");
+        } catch (NoRouteToHostException nre) {
+            System.err.println("Route to host not available: " + nre.getMessage());
         } catch (ConnectException ce) {
-            System.err.println("Connection Refused");
+            System.err.println("Connection refused: " + ce.getMessage());
         } catch (IOException ioe) {
-            System.err.println("IO Exception generated: " + ioe.getMessage());
+            System.err.println("IO Exception: " + ioe.getMessage());
         }
     }
 
@@ -179,13 +169,13 @@ public class ClackClient {
             // check if the user wishes to close the connection and does so
             case "DONE": {
                 closeConnection = true;
-                dataToSendToServer = new MessageClackData(userName, "DONE", key, -1);
+                dataToSendToServer = new MessageClackData(userName, userInput, key, ClackData.CONSTANT_LOGOUT);
                 break;
             }
-            // check if the user wishes to send a file name and attempts to do so
             case "SENDFILE": {
+                System.out.println("Please enter the file name:\n");
                 String fileName = inFromStd.next();
-                dataToSendToServer = new FileClackData(userName, fileName, 3); // 3 denotes SEND_FILE
+                dataToSendToServer = new FileClackData(userName, fileName, ClackData.CONSTANT_SENDFILE);
                 try {
                     ((FileClackData) dataToSendToServer).readFileContents(key);
                 } catch (IOException ioe) {
@@ -194,15 +184,14 @@ public class ClackClient {
                 }
                 break;
             }
-            // check if the user wishes to list users, tells it to do so
             case "LISTUSERS": {
-                dataToSendToServer = new MessageClackData(userName, "LISTUSERS", key, 0);
+                dataToSendToServer = new MessageClackData(userName, userInput, key, ClackData.CONSTANT_LISTUSERS);
                 break;
             }
-            // if the input is anything else, read the rest of the line and send it as a message
             default: {
                 String restOfLine = inFromStd.nextLine();
-                dataToSendToServer = new MessageClackData(userName, userInput + restOfLine, key, 2);
+                dataToSendToServer = new MessageClackData(userName, userInput + restOfLine,
+                        key, ClackData.CONSTANT_SENDMESSAGE);
                 break;
             }
         }
@@ -217,6 +206,15 @@ public class ClackClient {
     public void sendData() {
         try {
             outToServer.writeObject(dataToSendToServer);
+            outToServer.flush();
+            // hopefully this is temporary
+            // without it the program prints the last message twice and errors before closing
+            if (dataToSendToServer.getType() == ClackData.CONSTANT_LOGOUT) {
+                System.exit(0);
+            }
+            // now it just kills the program instantly
+            // fully aware this is bad practice, but its a dirty fix
+
         } catch (IOException ioe) {
             System.err.println(ioe.getMessage());
         }
@@ -231,6 +229,7 @@ public class ClackClient {
     public void receiveData() {
         try {
             dataToReceiveFromServer = (ClackData) inFromServer.readObject();
+
         } catch (ClassNotFoundException | IOException cnf) {
             System.err.println("Read failed: " + cnf.getMessage());
         }
@@ -244,14 +243,16 @@ public class ClackClient {
      */
     public void printData() {
         if (dataToReceiveFromServer == null) {
-            System.out.println("The reference is null, there is no data to print");
-        } else if (dataToReceiveFromServer instanceof FileClackData) {
-            System.out.println(getHostName() + " sent a file: " + ((FileClackData) dataToReceiveFromServer).getFileName());
-            System.out.println("with contents: " + dataToReceiveFromServer.getData(key));
-            System.out.println("with type: " + dataToReceiveFromServer.getType());
-        } else if (dataToReceiveFromServer instanceof MessageClackData) {
-            System.out.println(getHostName() + " sent a message with contents: " + dataToReceiveFromServer.getData(key));
-            System.out.println("with type: " + dataToReceiveFromServer.getType());
+            System.out.println("There is no data to receive, the reference is null");
+        } else if (dataToReceiveFromServer.getType() == ClackData.CONSTANT_SENDFILE) {
+            System.out.println(hostName + " sent " + ((FileClackData) dataToReceiveFromServer).getFileName()
+                    + " on " + dataToReceiveFromServer.getDate());
+            System.out.println(dataToReceiveFromServer.getData(key));
+        } else if (dataToReceiveFromServer.getType() == ClackData.CONSTANT_SENDMESSAGE) {
+            System.out.println(hostName + " sent a message on " + dataToReceiveFromServer.getDate());
+            System.out.println(dataToReceiveFromServer.getData(key));
+        } else if (dataToReceiveFromServer.getType() == ClackData.CONSTANT_LISTUSERS) {
+            System.out.println("User list: " + dataToReceiveFromServer.getData());
         }
     }
 
@@ -308,7 +309,13 @@ public class ClackClient {
      */
     @Override
     public int hashCode() {
-        return Objects.hash(userName, hostName, port, closeConnection, dataToReceiveFromServer, dataToSendToServer);
+        int closeConnectionInt = 0;
+        if (closeConnection) {
+            closeConnectionInt = 1;
+        }
+        return DEFAULT_HASH_CODE + userName.hashCode() + hostName.hashCode() + port +
+                dataToReceiveFromServer.hashCode() + dataToSendToServer.hashCode() +
+                closeConnectionInt;
     }
 
     /**
@@ -338,25 +345,25 @@ public class ClackClient {
             ClackClient clackClient = new ClackClient();
             clackClient.start();
         } else if (args.length == 1) {
-            // Take the first argument and split it into an array of strings based on the delimiters @ and :
+            // Take the first argument and split it into an array of string by the defined delimiters @ and :
             String[] tokens = args[0].split("[@:]");
-            if (tokens.length == 1) { // case (i), only username given
+            if (tokens.length == 1) { // case (i)
                 ClackClient clackClient = new ClackClient(tokens[0]);
                 clackClient.start();
-            } else if (tokens.length == 2) { // case (ii), username and hostname given
+            } else if (tokens.length == 2) { // case (ii)
                 ClackClient clackClient = new ClackClient(tokens[0], tokens[1]);
                 clackClient.start();
-            } else { // case (iii), username, hostname, and port number given
+            } else { // case (iii)
                 try {
-                    int portNumber = Integer.parseInt(tokens[3]);
+                    int portNumber = Integer.parseInt(tokens[2]);
                     ClackClient clackClient = new ClackClient(tokens[0], tokens[1], portNumber);
                     clackClient.start();
                 } catch (NumberFormatException nfe) {
-                    System.err.println("The value given for port number is not an integer");
+                    System.err.println("The value given for the port number could not be parsed as an integer");
                 }
             }
         } else {
-            System.err.println("Invalid number of arguments given, must be 0 or 1");
+            System.err.println("Too many arguments given, must be 0 or 1");
         }
     }
 }

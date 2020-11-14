@@ -22,9 +22,9 @@ public abstract class ClackData implements Serializable {
     private final static int DEFAULT_TYPE = 1;
 
     // instance variable declarations
-    private String userName;
-    private int type;
-    private Date date;
+    private final String userName;
+    private final int type;
+    private final Date date;
 
     /**
      * General purpose constructor for creating a ClackData object.
@@ -51,8 +51,7 @@ public abstract class ClackData implements Serializable {
      * Default constructor creates an invalid ClackData object.
      */
     public ClackData() {
-        // This might need revisiting, right now it creates an invalid object
-        this(DEFAULT_NAME, DEFAULT_TYPE);
+        this(DEFAULT_TYPE);
     }
 
     /**
@@ -113,25 +112,33 @@ public abstract class ClackData implements Serializable {
 
         key = key.toUpperCase();
 
-        for (int i = 0; i < alphabet.length; i++) {
+        // populates the alphabet variable with each letter in the alphabet
+        for (int i = 0; i < alphabet.length; ++i) {
             alphabet[i] = (char) (65 + i);
         }
 
-        for (int i = 0; i < encryptedString.length; i++) {
-            charBuffer = encryptedString[i];
-            if (encryptedString[i] == ' ') {
+        for (int i = 0; i < encryptedString.length; ++i) {
+            charBuffer = encryptedString[i]; // stores the current character in a buffer variable
+            // checks if the current character is a space, counts it if so
+            if(charBuffer == ' ') {
                 spaceCount++;
             }
-            if (((int) encryptedString[i] >= 65 && (int) encryptedString[i] <= 90)
-                    || ((int) encryptedString[i] >= 97 && (int) encryptedString[i] <= 122)) {
-                for (int j = 0; j < alphabet.length; j++)
-                    if (key.charAt(((i - spaceCount) % key.length())) == alphabet[j]) {
+            // checks if the current character is a lower case or upper case letter
+            if (((int) charBuffer >= 65 && (int) charBuffer <= 90)
+                    || ((int) charBuffer >= 97 && (int) charBuffer <= 122)) {
+                // iterates through every letter in the alphabet
+                for (int j = 0; j < alphabet.length; ++j) {
+                    // ???
+                    if (key.charAt((i - spaceCount) % key.length()) == alphabet[j]) {
                         encryptedString[i] += j;
                     }
+                }
 
-                if ((int) charBuffer >= 97 && (int) charBuffer <= 122 && (int) encryptedString[i] > 122) {
+                // if the original letter was uppercase, make sure it wasn't shifted outside the alphabet by wrapping.
+                if ((int) charBuffer >= 97 && (int) encryptedString[i] > 122) {
                     encryptedString[i] = (char) (((int) encryptedString[i] % 122) + 96);
-                } else if ((int) charBuffer >= 65 && (int) charBuffer <= 90 && (int) encryptedString[i] > 90) {
+                    // if the original letter was lowercase, make sure it wasn't shifted outside the alphabet by wrapping.
+                } else if ((int) charBuffer <= 90 && (int) encryptedString[i] > 90) {
                     encryptedString[i] = (char) (((int) encryptedString[i] % 90) + 64);
                 }
             }
@@ -155,25 +162,34 @@ public abstract class ClackData implements Serializable {
 
         key = key.toUpperCase();
 
-        for (int i = 0; i < alphabet.length; i++) {
+        // populates the alphabet variable with each letter in the alphabet
+        for (int i = 0; i < alphabet.length; ++i) {
             alphabet[i] = (char) (65 + i);
         }
 
-        for (int i = 0; i < decryptedString.length; i++) {
+        for (int i = 0; i < decryptedString.length; ++i) {
             charBuffer = decryptedString[i];
-            if (decryptedString[i] == ' ') {
+            // checks if the current character is a space, counts it if so
+            if (charBuffer == ' ') {
                 spaceCount++;
             }
-            if (((int) decryptedString[i] >= 65 && (int) decryptedString[i] <= 90)
-                    || ((int) decryptedString[i] >= 97 && (int) decryptedString[i] <= 122)) {
-                for (int j = 0; j < alphabet.length; j++)
+            // checks if the current character is a lower case or upper case letter
+            if (((int) charBuffer >= 65 && (int) charBuffer <= 90)
+                    || ((int) charBuffer >= 97 && (int) charBuffer <= 122)) {
+                // iterates through every letter in the alphabet
+                for (int j = 0; j < alphabet.length; ++j) {
+                    // ???
                     if (key.charAt((i - spaceCount) % key.length()) == alphabet[j]) {
                         decryptedString[i] -= j;
                     }
+                }
 
-                if ((int) charBuffer >= 65 && (int) charBuffer <= 90 && (int) decryptedString[i] < 65) {
+                // if the original letter was lowercase, make sure it wasn't shifted outside the alphabet by wrapping.
+                if ((int) charBuffer <= 90 && (int) decryptedString[i] < 65) {
                     decryptedString[i] += alphabet.length;
-                } else if ((int) charBuffer >= 97 && (int) charBuffer <= 122 && (int) decryptedString[i] < 97) {
+                }
+                // if the original letter was uppercase, make sure it wasn't shifted outside the alphabet by wrapping.
+                else if ((int) charBuffer >= 97 && (int) decryptedString[i] < 97) {
                     decryptedString[i] += alphabet.length;
                 }
             }
