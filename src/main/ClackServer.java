@@ -60,7 +60,6 @@ public class ClackServer {
      */
     public void start() {
         try {
-
             ServerSocket serverSocket = new ServerSocket(port);
             while (!closeConnection) {
                 Socket skt = serverSocket.accept();
@@ -78,6 +77,32 @@ public class ClackServer {
             closeConnection = true;
             System.err.println("IO Exception: " + ioe.getMessage());
         }
+    }
+
+    /**
+     * A method to go through the list of clients and create a list of usernames.
+     * Turns that list of usernames into a single string and returns it.
+     *
+     * @return A string representing the complete list of users.
+     */
+    synchronized public String listClients() {
+        ArrayList<String> users = new ArrayList<>();
+        for (ServerSideClientIO s : serverSideClientIOList) {
+            // iterate through the serverSideClientIOList and get each username from those clients.
+            // add those names to an ArrayList.
+            users.add(s.getDataToSendToClient().getUserName());
+        }
+        // go through the ArrayList and append all of the names into a single string and separate by commas.
+        StringBuilder userList = new StringBuilder("[");
+        for (int i = 0; i < users.size(); ++i) {
+            if (i < users.size() - 1) {
+                userList.append(users.get(i)).append(", ");
+            }
+            else {
+                userList.append(users.get(i)).append("]");
+            }
+        }
+        return userList.toString();
     }
 
     /**

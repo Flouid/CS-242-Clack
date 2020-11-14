@@ -57,6 +57,8 @@ public class ClackClient {
             dataToSendToServer = dataToReceiveFromServer = null;
             inFromServer = null;
             outToServer = null;
+            closeConnection = false;
+            dataToReceiveFromServer = dataToSendToServer = null;
 
             if (userName == null) {
                 throw new IllegalArgumentException("Username cannot be null");
@@ -122,6 +124,7 @@ public class ClackClient {
             sendData();
 
             while (!closeConnection) {
+                System.out.println("test");
                 readClientData();
                 sendData();
             }
@@ -170,6 +173,7 @@ public class ClackClient {
                 break;
             }
             case "SENDFILE": {
+                System.out.println("Please enter the file name:\n");
                 String fileName = inFromStd.next();
                 dataToSendToServer = new FileClackData(userName, fileName, ClackData.CONSTANT_SENDFILE);
                 try {
