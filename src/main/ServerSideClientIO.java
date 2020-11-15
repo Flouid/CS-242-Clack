@@ -20,37 +20,37 @@ import java.net.SocketException;
 public class ServerSideClientIO implements Runnable {
 
     // instance variable declarations
-    private boolean closeConnection; //true is closed, false is open
+    private boolean closeConnection; // true is closed, false is open
     private ClackData dataToReceiveFromClient;
     private ClackData dataToSendToClient;
     private ObjectInputStream inFromClient;
     private ObjectOutputStream outToClient;
-    private ClackServer server;
-    private Socket clientSocket;
+    private final ClackServer server;
+    private final Socket clientSocket;
 
-    private boolean isUserNameSet;
     private String connectedUserName;
 
     /**
-     * General purpose constructor that sets up a server with a socket for connecting to a client.
+     * The standard constructor to initialize a ServerSideClientIO object.
+     * This object handles all of the IO with the client on the server side of things.
      *
-     * @param server       A ClackServer object representing the server.
-     * @param clientSocket A Socket object that connects with the client.
+     * @param server The server that the object communicates with.
+     * @param clientSocket The socket that the client is connected to.
      */
     public ServerSideClientIO(ClackServer server, Socket clientSocket) {
         this.server = server;
         this.clientSocket = clientSocket;
-        this.closeConnection = false;
+        closeConnection = false;
         dataToReceiveFromClient = dataToSendToClient = null;
         inFromClient = null;
         outToClient = null;
 
-        isUserNameSet = false;
         connectedUserName = null;
     }
 
     /**
-     * A method for retrieving data from the client and broadcasting it to the client.
+     * The overall run method for the ServerSideClientIO object.
+     * Receives data and then broadcasts it to all of the other clients.
      */
     @Override
     public void run() {
@@ -58,20 +58,11 @@ public class ServerSideClientIO implements Runnable {
             inFromClient = new ObjectInputStream(clientSocket.getInputStream());
             outToClient = new ObjectOutputStream(clientSocket.getOutputStream());
 
+            receiveClientName();
+
             while (!closeConnection) {
                 receiveData();
-                if (!isUserNameSet) {
-                    connectedUserName = dataToReceiveFromClient.getUserName();
-                    isUserNameSet = true;
-                }
-                if (dataToReceiveFromClient.getType() != 0) {
-                    this.server.broadcast(dataToReceiveFromClient);
-                }
-                else {
-                    String clientList = server.listClients();
-                    dataToSendToClient = new MessageClackData(connectedUserName, clientList, 2);
-                    sendData();
-                }
+                server.broadcast(dataToReceiveFromClient);
             }
 
         } catch (IOException ioe) {
@@ -85,9 +76,15 @@ public class ServerSideClientIO implements Runnable {
     public void receiveData() {
         try {
             dataToReceiveFromClient = (ClackData) inFromClient.readObject();
-            if (dataToReceiveFromClient.getType() == -1)
+            if (dataToReceiveFromClient.getType()  == ClackData.CONSTANT_LOGOUT) {
+                server.remove(this);
                 closeConnection = true;
-
+            }
+            else if (dataToReceiveFromClient.getType() == ClackData.CONSTANT_LISTUSERS) {
+                String username = dataToReceiveFromClient.getUserName();
+                String userList = server.getUsers();
+                dataToReceiveFromClient = new MessageClackData(username, userList, ClackData.CONSTANT_LISTUSERS);
+            }
         } catch (IOException | ClassNotFoundException ioe) {
             System.err.println(ioe.getMessage());
         }
@@ -106,6 +103,24 @@ public class ServerSideClientIO implements Runnable {
 
     public ClackData getDataToSendToClient() {
         return dataToSendToClient;
+    }
+
+    /**
+     * A method to receive the client name.
+     * The first message that the client sends upon connecting contains only it's name.
+     */
+    public void receiveClientName() {
+        receiveData();
+        connectedUserName = dataToReceiveFromClient.getUserName();
+    }
+
+    /**
+     * A simple getter method to return the connected client's name.
+     *
+     * @return A string containing the username.
+     */
+    public String getUserName() {
+        return connectedUserName;
     }
 
     /**

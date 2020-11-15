@@ -21,6 +21,7 @@ public class ClientSideServerListener implements Runnable {
 
     /**
      * The functional part of the class that runs while the connection is open.
+     * Receives and prints data from the server.
      */
     @Override
     public void run() {
