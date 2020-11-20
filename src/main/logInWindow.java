@@ -29,13 +29,11 @@ public class logInWindow {
         Parent root = FXMLLoader.load(getClass().getResource("Clack.fxml"));
         Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
         window.setScene(new Scene(root));
-        window.show();
 
         if (userName.getText().equals("") && IP.getText().equals("")) {
             ClackClient clackClient = new ClackClient();
             clackClient.start();
         } else {
-            // Take the first argument and split it into an array of string by the defined delimiters @ and :
             if (!userName.getText().equals("") && IP.getText().equals("")) { // case (i)
                 ClackClient clackClient = new ClackClient(userName.getText());
                 clackClient.start();
@@ -52,7 +50,5 @@ public class logInWindow {
                 }
             }
         }
-
-
     }
 }

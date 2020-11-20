@@ -205,7 +205,6 @@ public class ClackClient {
             }
         }
     }
-
     /**
      * A method to write the data contained in dataToSendToServer
      * to the output stream outToServer
@@ -258,14 +257,12 @@ public class ClackClient {
                     + " on " + dataToReceiveFromServer.getDate());
             System.out.println(dataToReceiveFromServer.getData(key));
         } else if (dataToReceiveFromServer.getType() == ClackData.CONSTANT_SENDMESSAGE) {
-            messages.appendText(hostName + ": " + dataToReceiveFromServer.getData(key));
-//            System.out.println(hostName + " sent a message on " + dataToReceiveFromServer.getDate());
-//            System.out.println(dataToReceiveFromServer.getData(key));
+            System.out.println(hostName + " sent a message on " + dataToReceiveFromServer.getDate());
+            System.out.println(dataToReceiveFromServer.getData(key));
         } else if (dataToReceiveFromServer.getType() == ClackData.CONSTANT_LISTUSERS) {
             System.out.println("User list: " + dataToReceiveFromServer.getData());
         }
     }
-
     /**
      * A method to return the name of a client.
      *
