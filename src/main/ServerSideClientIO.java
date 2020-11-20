@@ -7,9 +7,7 @@ import data.MessageClackData;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.net.ServerSocket;
 import java.net.Socket;
-import java.net.SocketException;
 
 /**
  * This class handles sending and receiving data.
@@ -34,7 +32,7 @@ public class ServerSideClientIO implements Runnable {
      * The standard constructor to initialize a ServerSideClientIO object.
      * This object handles all of the IO with the client on the server side of things.
      *
-     * @param server The server that the object communicates with.
+     * @param server       The server that the object communicates with.
      * @param clientSocket The socket that the client is connected to.
      */
     public ServerSideClientIO(ClackServer server, Socket clientSocket) {
@@ -76,11 +74,10 @@ public class ServerSideClientIO implements Runnable {
     public void receiveData() {
         try {
             dataToReceiveFromClient = (ClackData) inFromClient.readObject();
-            if (dataToReceiveFromClient.getType()  == ClackData.CONSTANT_LOGOUT) {
+            if (dataToReceiveFromClient.getType() == ClackData.CONSTANT_LOGOUT) {
                 server.remove(this);
                 closeConnection = true;
-            }
-            else if (dataToReceiveFromClient.getType() == ClackData.CONSTANT_LISTUSERS) {
+            } else if (dataToReceiveFromClient.getType() == ClackData.CONSTANT_LISTUSERS) {
                 String username = dataToReceiveFromClient.getUserName();
                 String userList = server.getUsers();
                 dataToReceiveFromClient = new MessageClackData(username, userList, ClackData.CONSTANT_LISTUSERS);

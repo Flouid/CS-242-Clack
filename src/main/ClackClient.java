@@ -3,6 +3,10 @@ package main;
 import data.ClackData;
 import data.FileClackData;
 import data.MessageClackData;
+import javafx.fxml.FXML;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -27,6 +31,7 @@ public class ClackClient {
     private final static boolean DEFAULT_CLOSE_CONNECTION = false;
     private final static String DEFAULT_HOST_NAME = "localhost";
     private final static int DEFAULT_HASH_CODE = 7;
+    public Button sendButton;
 
     // instance variable declarations
     private String userName;
@@ -40,6 +45,12 @@ public class ClackClient {
 
     private Scanner inFromStd;
     private final String key = "encryption";
+
+    @FXML
+    private final TextArea messages = new TextArea();
+
+    @FXML
+    private final TextField text = new TextField();
 
     /**
      * General purpose constructor to set up username, hostname, and port.
@@ -247,8 +258,9 @@ public class ClackClient {
                     + " on " + dataToReceiveFromServer.getDate());
             System.out.println(dataToReceiveFromServer.getData(key));
         } else if (dataToReceiveFromServer.getType() == ClackData.CONSTANT_SENDMESSAGE) {
-            System.out.println(hostName + " sent a message on " + dataToReceiveFromServer.getDate());
-            System.out.println(dataToReceiveFromServer.getData(key));
+            messages.appendText(hostName + ": " + dataToReceiveFromServer.getData(key));
+//            System.out.println(hostName + " sent a message on " + dataToReceiveFromServer.getDate());
+//            System.out.println(dataToReceiveFromServer.getData(key));
         } else if (dataToReceiveFromServer.getType() == ClackData.CONSTANT_LISTUSERS) {
             System.out.println("User list: " + dataToReceiveFromServer.getData());
         }
@@ -339,29 +351,6 @@ public class ClackClient {
      * @author Louis Keith
      */
     public static void main(String[] args) {
-        if (args.length == 0) {
-            ClackClient clackClient = new ClackClient();
-            clackClient.start();
-        } else if (args.length == 1) {
-            // Take the first argument and split it into an array of string by the defined delimiters @ and :
-            String[] tokens = args[0].split("[@:]");
-            if (tokens.length == 1) { // case (i)
-                ClackClient clackClient = new ClackClient(tokens[0]);
-                clackClient.start();
-            } else if (tokens.length == 2) { // case (ii)
-                ClackClient clackClient = new ClackClient(tokens[0], tokens[1]);
-                clackClient.start();
-            } else { // case (iii)
-                try {
-                    int portNumber = Integer.parseInt(tokens[2]);
-                    ClackClient clackClient = new ClackClient(tokens[0], tokens[1], portNumber);
-                    clackClient.start();
-                } catch (NumberFormatException nfe) {
-                    System.err.println("The value given for the port number could not be parsed as an integer");
-                }
-            }
-        } else {
-            System.err.println("Too many arguments given, must be 0 or 1");
-        }
+
     }
 }

@@ -97,8 +97,7 @@ public class ClackServer {
         for (int i = 0; i < users.size(); ++i) {
             if (i < users.size() - 1) {
                 userList.append(users.get(i)).append(", ");
-            }
-            else {
+            } else {
                 userList.append(users.get(i)).append("]");
             }
         }

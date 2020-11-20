@@ -37,7 +37,7 @@ public class TestClackClient {
 
         // Testing start method, which in turn tests internal functionality
         System.out.println("START METHOD");
-        clackClient1.start();
+//        clackClient1.start();
         System.out.println("\n");
 
 
@@ -62,7 +62,7 @@ public class TestClackClient {
 
         // Testing start method, which in turn tests internal functionality
         System.out.println("START METHOD");
-        clackClient3.start();
+//        clackClient3.start();
         System.out.println("\n");
 
 
@@ -87,7 +87,7 @@ public class TestClackClient {
 
         // Testing start method, which in turn tests internal functionality
         System.out.println("START METHOD");
-        clackClient5.start();
+//        clackClient5.start();
         System.out.println("\n");
 
 
@@ -112,7 +112,7 @@ public class TestClackClient {
 
         // Testing start method, which in turn tests internal functionality
         System.out.println("START METHOD");
-        clackClient7.start();
+//        clackClient7.start();
         System.out.println("\n");
     }
 }
