@@ -3,10 +3,16 @@ package main;
 import data.ClackData;
 import data.FileClackData;
 import data.MessageClackData;
+import javafx.application.Application;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -23,7 +29,7 @@ import java.util.Scanner;
  *
  * @author Alex Cohen
  */
-public class ClackClient {
+public class ClackClient extends Application {
 
     // default values
     private final static int DEFAULT_PORT = 7000;
@@ -31,7 +37,6 @@ public class ClackClient {
     private final static boolean DEFAULT_CLOSE_CONNECTION = false;
     private final static String DEFAULT_HOST_NAME = "localhost";
     private final static int DEFAULT_HASH_CODE = 7;
-    public Button sendButton;
 
     // instance variable declarations
     private String userName;
@@ -47,10 +52,13 @@ public class ClackClient {
     private final String key = "encryption";
 
     @FXML
-    private final TextArea messages = new TextArea();
+    private Button sendButton;
 
     @FXML
-    private final TextField text = new TextField();
+    private TextArea messages;
+
+    @FXML
+    private TextField text;
 
     /**
      * General purpose constructor to set up username, hostname, and port.
@@ -121,36 +129,49 @@ public class ClackClient {
      *
      * @author Louis Keith
      */
-    public synchronized void start() {
-        inFromStd = new Scanner(System.in);
-        try {
-            Socket skt = new Socket(hostName, port);
-            outToServer = new ObjectOutputStream(skt.getOutputStream());
-            inFromServer = new ObjectInputStream(skt.getInputStream());
+    @Override
+    public synchronized void start(Stage primaryStage) throws IOException {
+        Parent root = FXMLLoader.load(getClass().getResource("logInScreen.fxml"));
+        primaryStage.initStyle(StageStyle.UNDECORATED);
+        primaryStage.setTitle("Clack");
+        primaryStage.setScene(new Scene(root));
+        primaryStage.show();
 
-            (new Thread(new ClientSideServerListener(this))).start();
+        Socket skt = new Socket(hostName, port);
+        outToServer = new ObjectOutputStream(skt.getOutputStream());
+        inFromServer = new ObjectInputStream(skt.getInputStream());
 
-            // send the username to the server
-            dataToSendToServer = new MessageClackData(userName, userName, key, ClackData.CONSTANT_SENDMESSAGE);
-            sendData();
+        (new Thread(new ClientSideServerListener(this))).start();
 
-            while (!closeConnection) {
-                readClientData();
-                sendData();
-            }
-
-            inFromStd.close();
-            skt.close();
-
-        } catch (UnknownHostException uhe) {
-            System.err.println("Host not known: " + uhe.getMessage());
-        } catch (NoRouteToHostException nre) {
-            System.err.println("Route to host not available: " + nre.getMessage());
-        } catch (ConnectException ce) {
-            System.err.println("Connection refused: " + ce.getMessage());
-        } catch (IOException ioe) {
-            System.err.println("IO Exception: " + ioe.getMessage());
-        }
+//        inFromStd = new Scanner(System.in);
+//        try {
+//            Socket skt = new Socket(hostName, port);
+//            outToServer = new ObjectOutputStream(skt.getOutputStream());
+//            inFromServer = new ObjectInputStream(skt.getInputStream());
+//
+//            (new Thread(new ClientSideServerListener(this))).start();
+//
+//            // send the username to the server
+//            dataToSendToServer = new MessageClackData(userName, userName, key, ClackData.CONSTANT_SENDMESSAGE);
+//            sendData();
+//
+//            while (!closeConnection) {
+//                readClientData();
+//                sendData();
+//            }
+//
+//            inFromStd.close();
+//            skt.close();
+//
+//        } catch (UnknownHostException uhe) {
+//            System.err.println("Host not known: " + uhe.getMessage());
+//        } catch (NoRouteToHostException nre) {
+//            System.err.println("Route to host not available: " + nre.getMessage());
+//        } catch (ConnectException ce) {
+//            System.err.println("Connection refused: " + ce.getMessage());
+//        } catch (IOException ioe) {
+//            System.err.println("IO Exception: " + ioe.getMessage());
+//        }
     }
 
     /**
@@ -205,6 +226,7 @@ public class ClackClient {
             }
         }
     }
+
     /**
      * A method to write the data contained in dataToSendToServer
      * to the output stream outToServer
@@ -263,6 +285,7 @@ public class ClackClient {
             System.out.println("User list: " + dataToReceiveFromServer.getData());
         }
     }
+
     /**
      * A method to return the name of a client.
      *
@@ -314,16 +337,16 @@ public class ClackClient {
      *
      * @return Integer representing a unique hashcode.
      */
-    @Override
-    public int hashCode() {
-        int closeConnectionInt = 0;
-        if (closeConnection) {
-            closeConnectionInt = 1;
-        }
-        return DEFAULT_HASH_CODE + userName.hashCode() + hostName.hashCode() + port +
-                dataToReceiveFromServer.hashCode() + dataToSendToServer.hashCode() +
-                closeConnectionInt;
-    }
+//    @Override
+//    public int hashCode() {
+//        int closeConnectionInt = 0;
+//        if (closeConnection) {
+//            closeConnectionInt = 1;
+//        }
+//        return DEFAULT_HASH_CODE + userName.hashCode() + hostName.hashCode() + port +
+//                dataToReceiveFromServer.hashCode() + dataToSendToServer.hashCode() +
+//                closeConnectionInt;
+//    }
 
     /**
      * A method to return the entire client object as a string.
@@ -348,6 +371,6 @@ public class ClackClient {
      * @author Louis Keith
      */
     public static void main(String[] args) {
-
+        launch(args);
     }
 }

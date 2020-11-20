@@ -30,25 +30,25 @@ public class logInWindow {
         Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
         window.setScene(new Scene(root));
 
-        if (userName.getText().equals("") && IP.getText().equals("")) {
-            ClackClient clackClient = new ClackClient();
-            clackClient.start();
-        } else {
-            if (!userName.getText().equals("") && IP.getText().equals("")) { // case (i)
-                ClackClient clackClient = new ClackClient(userName.getText());
-                clackClient.start();
-            } else if (!userName.getText().equals("") && !IP.getText().equals("")) { // case (ii)
-                ClackClient clackClient = new ClackClient(userName.getText(), IP.getText());
-                clackClient.start();
-            } else { // case (iii)
-                try {
-                    int portNumber = Integer.parseInt(IP.getText());
-                    ClackClient clackClient = new ClackClient(userName.getText(), IP.getText(), portNumber);
-                    clackClient.start();
-                } catch (NumberFormatException nfe) {
-                    System.err.println("The value given for the port number could not be parsed as an integer");
-                }
-            }
-        }
+//        if (userName.getText().equals("") && IP.getText().equals("")) {
+//            ClackClient clackClient = new ClackClient();
+//            clackClient.start();
+//        } else {
+//            if (!userName.getText().equals("") && IP.getText().equals("")) { // case (i)
+//                ClackClient clackClient = new ClackClient(userName.getText());
+//                clackClient.start();
+//            } else if (!userName.getText().equals("") && !IP.getText().equals("")) { // case (ii)
+//                ClackClient clackClient = new ClackClient(userName.getText(), IP.getText());
+//                clackClient.start();
+//            } else { // case (iii)
+//                try {
+//                    int portNumber = Integer.parseInt(IP.getText());
+//                    ClackClient clackClient = new ClackClient(userName.getText(), IP.getText(), portNumber);
+//                    clackClient.start();
+//                } catch (NumberFormatException nfe) {
+//                    System.err.println("The value given for the port number could not be parsed as an integer");
+//                }
+//            }
+//        }
     }
 }

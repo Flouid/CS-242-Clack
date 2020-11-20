@@ -6,13 +6,9 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="719.0" prefWidth="882.0" style="-fx-background-color: black;"
-            xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="main.ClackClient">
-   <ListView layoutX="14.0" layoutY="14.0" prefHeight="691.0" prefWidth="333.0" style="-fx-background-color: grey;"/>
-   <Button fx:id="sendButton" layoutX="371.0" layoutY="657.0" mnemonicParsing="false" onAction="#readClientData"
-           prefHeight="48.0" prefWidth="86.0" style="-fx-background-radius: 15;" text="Send"/>
-   <TextArea fx:id="messages" layoutX="370.0" layoutY="14.0" prefHeight="631.0" prefWidth="498.0"/>
-   <TextField fx:id="text" layoutX="480.0" layoutY="657.0" prefHeight="48.0" prefWidth="388.0"
-              style="-fx-background-color: white;"/>
+<AnchorPane prefHeight="719.0" prefWidth="882.0" style="-fx-background-color: black;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.ClackClient">
+   <ListView layoutX="14.0" layoutY="14.0" prefHeight="691.0" prefWidth="333.0" style="-fx-background-color: grey;" />
+   <Button fx:id="sendButton" layoutX="371.0" layoutY="657.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="86.0" style="-fx-background-radius: 15;" text="Send" />
+   <TextArea fx:id="messages" layoutX="370.0" layoutY="14.0" prefHeight="631.0" prefWidth="498.0" />
+   <TextField fx:id="text" layoutX="480.0" layoutY="657.0" prefHeight="48.0" prefWidth="388.0" promptText="Write here" style="-fx-background-color: white;" />
 </AnchorPane>
