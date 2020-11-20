@@ -98,10 +98,6 @@ public class ServerSideClientIO implements Runnable {
         }
     }
 
-    public ClackData getDataToSendToClient() {
-        return dataToSendToClient;
-    }
-
     /**
      * A method to receive the client name.
      * The first message that the client sends upon connecting contains only it's name.
