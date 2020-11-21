@@ -6,11 +6,11 @@ import data.MessageClackData;
 import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
@@ -50,15 +50,6 @@ public class ClackClient extends Application {
 
     private Scanner inFromStd;
     private final String key = "encryption";
-
-    @FXML
-    private Button sendButton;
-
-    @FXML
-    private TextArea messages;
-
-    @FXML
-    private TextField text;
 
     /**
      * General purpose constructor to set up username, hostname, and port.
@@ -124,34 +115,96 @@ public class ClackClient extends Application {
         this(DEFAULT_NAME);
     }
 
+
+//    public Scene logInWindow(Button logIn) {
+//        AnchorPane layout = new AnchorPane();
+//        Button logInButton = new Button("Log In");
+//        TextField userName = new TextField();
+//        TextField ip = new TextField();
+//        Label userNameLabel = new Label("Username: ");
+//        Label ipLabel = new Label("IP: ");
+//        Label welcome = new Label("Welcome to Clack!");
+//
+//        layout.setStyle("-fx-background-color: black");
+//        layout.setStyle("-fx-border-color: blue");
+//        layout.setStyle("-fx-border-width: 5");
+//        layout.setPrefWidth(600);
+//        layout.setPrefHeight(400);
+//
+//        welcome.setStyle("-fx-font-size: 36");
+//        welcome.setStyle("-fx-text-fill: Black");
+//        welcome.setAlignment(Pos.CENTER);
+//        welcome.setContentDisplay(ContentDisplay.CENTER);
+//        welcome.setLayoutX(125);
+//        welcome.setLayoutY(39);
+//
+//        logInButton.setLayoutX(171);
+//        logInButton.setLayoutY(305);
+////        logInButton.setMnemonicParsing(false);
+//        logInButton.prefHeight(55);
+//        logInButton.prefWidth(258);
+//        logInButton.setStyle("-fx-font-size: 15");
+//        logInButton.setStyle("-fx-background-color: grey");
+//
+//        userNameLabel.setLayoutX(87);
+//        userNameLabel.setLayoutY(158);
+//        userNameLabel.setStyle("-fx-text-fill: white");
+//        userNameLabel.setStyle("-fx-font-size: 15");
+//
+//        ipLabel.setLayoutX(145);
+//        ipLabel.setLayoutY(237);
+//        ipLabel.setStyle("-fx-text-fill: white");
+//        ipLabel.setStyle("-fx-font-size: 15");
+//
+//        userName.setLayoutX(220);
+//        userName.setLayoutY(149);
+//        userName.prefHeight(37);
+//        userName.prefWidth(215);
+//        userName.setStyle("-fx-background-color: white");
+//
+//        ip.setLayoutX(220);
+//        ip.setLayoutY(228);
+//        ip.prefHeight(37);
+//        ip.prefWidth(215);
+//        ip.setStyle("-fx-background-color: white");
+//
+//        layout.getChildren().addAll(logInButton, userName, ip, userNameLabel, ipLabel, welcome);
+//
+//
+//        logInButton.setOnAction(e -> {
+//            System.out.println("hello");
+//        });
+////        System.out.println(layout.getChildren().get(0).getId());
+//        return new Scene(layout);
+//    }
+
     /**
      * A method to start and run the clack client until the user decides to stop.
      *
      * @author Louis Keith
      */
-    @Override
+//    @Override
     public synchronized void start(Stage primaryStage) throws IOException {
+//    public void logInWindow(){
+        Button logIn = new Button("Log In");
         Parent root = FXMLLoader.load(getClass().getResource("logInScreen.fxml"));
+        primaryStage.setScene(new Scene(root));
         primaryStage.initStyle(StageStyle.UNDECORATED);
         primaryStage.setTitle("Clack");
-        primaryStage.setScene(new Scene(root));
         primaryStage.show();
+    }
 
-        Socket skt = new Socket(hostName, port);
-        outToServer = new ObjectOutputStream(skt.getOutputStream());
-        inFromServer = new ObjectInputStream(skt.getInputStream());
+    public synchronized void startClack() throws IOException {
 
-        (new Thread(new ClientSideServerListener(this))).start();
+        try {
+            Socket skt = new Socket(hostName, port);
+            outToServer = new ObjectOutputStream(skt.getOutputStream());
+            inFromServer = new ObjectInputStream(skt.getInputStream());
+            closeConnection = false;
 
-//        inFromStd = new Scanner(System.in);
-//        try {
-//            Socket skt = new Socket(hostName, port);
-//            outToServer = new ObjectOutputStream(skt.getOutputStream());
-//            inFromServer = new ObjectInputStream(skt.getInputStream());
+            (new Thread(new ClientSideServerListener(this))).start();
 //
-//            (new Thread(new ClientSideServerListener(this))).start();
-//
-//            // send the username to the server
+            // send the username to the server
 //            dataToSendToServer = new MessageClackData(userName, userName, key, ClackData.CONSTANT_SENDMESSAGE);
 //            sendData();
 //
@@ -162,16 +215,16 @@ public class ClackClient extends Application {
 //
 //            inFromStd.close();
 //            skt.close();
-//
-//        } catch (UnknownHostException uhe) {
-//            System.err.println("Host not known: " + uhe.getMessage());
-//        } catch (NoRouteToHostException nre) {
-//            System.err.println("Route to host not available: " + nre.getMessage());
-//        } catch (ConnectException ce) {
-//            System.err.println("Connection refused: " + ce.getMessage());
-//        } catch (IOException ioe) {
-//            System.err.println("IO Exception: " + ioe.getMessage());
-//        }
+
+        } catch (UnknownHostException uhe) {
+            System.err.println("Host not known: " + uhe.getMessage());
+        } catch (NoRouteToHostException nre) {
+            System.err.println("Route to host not available: " + nre.getMessage());
+        } catch (ConnectException ce) {
+            System.err.println("Connection refused: " + ce.getMessage());
+        } catch (IOException ioe) {
+            System.err.println("IO Exception: " + ioe.getMessage());
+        }
     }
 
     /**
@@ -191,10 +244,11 @@ public class ClackClient extends Application {
      *
      * @author Louis Keith
      */
-    public void readClientData() {
+    public void readClientData(String userInput) {
         // get command from user
-        System.out.print("Enter command: ");
-        String userInput = inFromStd.next();
+//        System.out.print("Enter command: ");
+//        String userInput = inFromStd.next();
+        System.out.println(userInput);
 
         switch (userInput) {
             // check if the user wishes to close the connection and does so
