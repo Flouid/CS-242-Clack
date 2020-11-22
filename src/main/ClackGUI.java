@@ -41,6 +41,7 @@ public class ClackGUI {
 
     @FXML
     void logIn(ActionEvent event) throws IOException {
+//        System.out.println("hello");
         Parent root = FXMLLoader.load(getClass().getResource("Clack.fxml"));
         Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
         window.setScene(new Scene(root));
@@ -65,11 +66,13 @@ public class ClackGUI {
                 }
             }
         }
+        System.out.println(client.toString());
     }
 
     @FXML
     void send() {
-        client.readClientData(text.getText());
+        System.out.println("goodbye");
+        client.readClientData("text.getText()");
         client.sendData();
     }
 }

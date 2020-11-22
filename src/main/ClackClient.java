@@ -183,10 +183,7 @@ public class ClackClient extends Application {
      *
      * @author Louis Keith
      */
-//    @Override
     public synchronized void start(Stage primaryStage) throws IOException {
-//    public void logInWindow(){
-        Button logIn = new Button("Log In");
         Parent root = FXMLLoader.load(getClass().getResource("logInScreen.fxml"));
         primaryStage.setScene(new Scene(root));
         primaryStage.initStyle(StageStyle.UNDECORATED);
@@ -202,7 +199,7 @@ public class ClackClient extends Application {
             inFromServer = new ObjectInputStream(skt.getInputStream());
             closeConnection = false;
 
-            (new Thread(new ClientSideServerListener(this))).start();
+//            (new Thread(new ClientSideServerListener(this))).start();
 //
             // send the username to the server
 //            dataToSendToServer = new MessageClackData(userName, userName, key, ClackData.CONSTANT_SENDMESSAGE);
