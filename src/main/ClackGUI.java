@@ -28,7 +28,7 @@ public class ClackGUI {
     private TextField text;
 
     @FXML
-    private ClackClient client;
+    private static ClackClient client;
 
     @FXML
     private TextField IP;
@@ -39,9 +39,9 @@ public class ClackGUI {
     @FXML
     private Button logInButton;
 
+
     @FXML
     void logIn(ActionEvent event) throws IOException {
-//        System.out.println("hello");
         Parent root = FXMLLoader.load(getClass().getResource("Clack.fxml"));
         Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
         window.setScene(new Scene(root));
@@ -66,13 +66,14 @@ public class ClackGUI {
                 }
             }
         }
-        System.out.println(client.toString());
     }
 
     @FXML
     void send() {
-        System.out.println("goodbye");
-        client.readClientData("text.getText()");
-        client.sendData();
+        if (!text.getText().equals("")) {
+            client.readClientData(text.getText());
+            client.sendData();
+            text.clear();
+        }
     }
 }

@@ -199,11 +199,11 @@ public class ClackClient extends Application {
             inFromServer = new ObjectInputStream(skt.getInputStream());
             closeConnection = false;
 
-//            (new Thread(new ClientSideServerListener(this))).start();
+            (new Thread(new ClientSideServerListener(this))).start();
 //
             // send the username to the server
-//            dataToSendToServer = new MessageClackData(userName, userName, key, ClackData.CONSTANT_SENDMESSAGE);
-//            sendData();
+            dataToSendToServer = new MessageClackData(userName, userName, key, ClackData.CONSTANT_SENDMESSAGE);
+            sendData();
 //
 //            while (!closeConnection) {
 //                readClientData();
@@ -242,10 +242,6 @@ public class ClackClient extends Application {
      * @author Louis Keith
      */
     public void readClientData(String userInput) {
-        // get command from user
-//        System.out.print("Enter command: ");
-//        String userInput = inFromStd.next();
-        System.out.println(userInput);
 
         switch (userInput) {
             // check if the user wishes to close the connection and does so
@@ -270,8 +266,7 @@ public class ClackClient extends Application {
                 break;
             }
             default: {
-                String restOfLine = inFromStd.nextLine();
-                dataToSendToServer = new MessageClackData(userName, userInput + restOfLine,
+                dataToSendToServer = new MessageClackData(userName, userInput,
                         key, ClackData.CONSTANT_SENDMESSAGE);
                 break;
             }
