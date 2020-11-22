@@ -183,6 +183,7 @@ public class ClackClient extends Application {
      *
      * @author Louis Keith
      */
+    @Override
     public synchronized void start(Stage primaryStage) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("logInScreen.fxml"));
         primaryStage.setScene(new Scene(root));
@@ -318,6 +319,7 @@ public class ClackClient extends Application {
      * @author Louis Keith
      */
     public void printData() {
+
         if (dataToReceiveFromServer == null) {
             System.out.println("There is no data to receive, the reference is null");
         } else if (dataToReceiveFromServer.getType() == ClackData.CONSTANT_SENDFILE) {

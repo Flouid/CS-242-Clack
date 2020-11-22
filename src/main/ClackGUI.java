@@ -73,6 +73,7 @@ public class ClackGUI {
         if (!text.getText().equals("")) {
             client.readClientData(text.getText());
             client.sendData();
+//            client.printData();
             text.clear();
         }
     }
